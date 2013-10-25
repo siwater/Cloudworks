@@ -1,0 +1,8 @@
+*.obj
+*.exe
+*.pdb
+*.suo
+Citrix.*/obj/*
+Citrix.*/bin/*
+packages
+Citrix.*/*.user
