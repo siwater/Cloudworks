@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.7</ProductVersion>
+    <ProjectGuid>df61dd50-cd17-48f7-9800-9370bede6f26</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>Citrix.Cloudworks.Agent.Setup</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <Name>Citrix.Cloudworks.Agent.Setup</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+    <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Citrix.Cloudworks.Agent.wxs" />
+    <Compile Include="Product.wxs" />
+    <Compile Include="WixUI_Custom.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Citrix.Cloudworks.Agent\Citrix.Cloudworks.Agent.csproj">
+      <Name>Citrix.Cloudworks.Agent</Name>
+      <Project>{a3718167-9e35-4f99-acce-ab6214bb8a46}</Project>
+      <Private>True</Private>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+      <DoNotHarvest>True</DoNotHarvest>
+      <InstallProject>True</InstallProject>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="000_XenDesktop_Combo_All.ico" />
+    <None Include="HeatOutputTransform.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <Target Name="BeforeBuild">
+    <MSBuild Projects="%(ProjectReference.FullPath)" Properties="Configuration=$(Configuration);Platform=AnyCPU" Condition="'%(ProjectReference.InstallProject)'=='True'" />
+    <PropertyGroup>
+      <LinkerBaseInputPaths>%(ProjectReference.RootDir)%(ProjectReference.Directory)bin\$(Configuration)\</LinkerBaseInputPaths>
+      <DefineConstants>BasePath=%(ProjectReference.RootDir)%(ProjectReference.Directory)bin\$(Configuration)\;</DefineConstants>
+    </PropertyGroup>
+    <HeatDirectory OutputFile="%(ProjectReference.Filename).xml" Directory="%(ProjectReference.RootDir)%(ProjectReference.Directory)bin\$(Configuration)\" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="%(ProjectReference.Filename)_Project" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" Condition="'%(ProjectReference.InstallProject)'=='True'" PreprocessorVariable="var.BasePath" />
+    <XslTransformation XmlInputPaths="%(ProjectReference.Filename).xml" XslInputPath="HeatOutputTransform.xslt" OutputPaths="%(ProjectReference.Filename).wxs" Condition="'%(ProjectReference.InstallProject)'=='True'" />
+  </Target>
+</Project>

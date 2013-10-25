@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product Id="42dde6b2-fd14-4e25-bdcb-8010b6ebe20e" Name="Citrix Cloudworks Agent" Language="1033" Version="1.0.0.0" Manufacturer="Citrix Systems, Inc." UpgradeCode="a4301867-f70b-4e1e-89ea-8ebe8e4b80ee">
+
+    <Package InstallerVersion="200"
+             Description="Citrix Cloudworks Agent Installer"
+             Compressed="yes"
+             InstallScope="perMachine" />
+    <Icon Id="XenDesktop_Combo_All.ico" SourceFile="000_XenDesktop_Combo_All.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="XenDesktop_Combo_All.ico"/>
+    <Property Id="ARPHELPLINK" Value="http://community.citrix.com/stackmate" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes"/>
+
+    <!-- Require administrator privileges -->
+    <Condition Message="You need to be an administrator to install this product.">Privileged</Condition>
+
+    <!-- Require .NET 4.5 to install -->
+    <PropertyRef Id="NETFRAMEWORK45" />
+    <Condition Message='This setup requires the .NET Framework 4.5 be installed.'>
+      <![CDATA[(Installed OR NETFRAMEWORK45)]]>
+    </Condition>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER1" Name="Citrix">
+          <Directory Id="INSTALLFOLDER2" Name="Cloudworks">
+            <Directory Id="INSTALLFOLDER" Name="Agent" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="ProductFeature" Title="Citrix Cloudworks Agent" Level="1">
+      <ComponentGroupRef Id="Citrix.Cloudworks.Agent_Project" />
+      <ComponentRef Id="ServiceProcess"/>
+      <ComponentRef Id="RegistryEntries"/>
+    </Feature>
+    
+    <Component Id="RegistryEntries" Guid="8056406d-cd9a-43a4-91cf-a15847943400" Directory="INSTALLFOLDER" KeyPath="yes">
+      <RegistryKey Root="HKLM" Key="Software\Policies\Citrix\Cloudworks" ForceDeleteOnUninstall="yes">
+      </RegistryKey>
+    </Component>
+    
+    <Component Id="ServiceProcess" Directory="INSTALLFOLDER">
+      <File Id="Citrix.Cloudworks.Agent.exe" Name="Citrix.Cloudworks.Agent.exe" Source="$(var.BasePath)\Citrix.Cloudworks.Agent.exe" Vital="yes" KeyPath="yes" DiskId="1"/>
+        
+      <ServiceInstall
+          Id="ServiceInstaller" 
+          Type="ownProcess" 
+          Vital="yes" 
+          Name="CtxStkSvc"
+          DisplayName="Citrix Cloudworks Agent" 
+          Description="Windows Agent for Citrix Cloudworks" 
+          Start="auto"
+          Account="LocalSystem"
+          ErrorControl="ignore"
+          Interactive="no" />
+      <ServiceControl Id="StartService" Stop="uninstall" Remove="uninstall" Name="CtxCwSvc" Wait="yes" />
+    </Component>
+
+    <WixVariable Id="WixUILicenseRtf" Value="eula.rtf"/>
+
+    <UIRef Id="WixUI_Custom"/>
+    
+  </Product>
+  
+</Wix>
