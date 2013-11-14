@@ -8,7 +8,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="w:Component[w:File/@Source='$(var.BasePath)\Citrix.Cloudworks.Agent.exe']">
+  <xsl:template match="w:Component[w:File/@Source='$(var.BinPath)\Citrix.Cloudworks.Agent.exe']">
     <w:Component>
       <xsl:attribute name="Id">
         <xsl:value-of select="@Id"/>

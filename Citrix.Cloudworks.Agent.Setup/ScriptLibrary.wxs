@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="SCRIPTFOLDER">
+            <Component Id="cmp7FAC36AF1FB58E7DC56FAA24734D3D4B" Guid="{98486D38-0E4C-4BAB-9F30-8D6BC7202606}">
+                <File Id="fil4978E9E8943C490DF9D97BDB70F04E3B" KeyPath="yes" Source="$(var.ScriptPath)\CreateDomain.ps1" />
+            </Component>
+            <Component Id="cmp1042C63E4A554E760BADFBD3F6E30A65" Guid="{62CBEC7D-3D18-4A8D-94A6-61CA78A874FB}">
+                <File Id="filC0E3B125A3484038BB69ED0DFBE1B111" KeyPath="yes" Source="$(var.ScriptPath)\GetDnsConfiguration.ps1" />
+            </Component>
+            <Component Id="cmp144A9D35F3A6C27E228ADCA659AEFC5A" Guid="{473A95DF-9014-4B22-9328-E9CAFF4BAD7E}">
+                <File Id="fil2A148AD9AC38313A5702E1FAF2FB01A3" KeyPath="yes" Source="$(var.ScriptPath)\JoinDomain.ps1" />
+            </Component>
+            <Component Id="cmp80E4D991E152CFDE6C6F960CDC09A736" Guid="{CDB83E2A-D4A0-40AC-B78B-F487A9B63CD4}">
+                <File Id="fil6490352AA1F4A50440EB98F18D7CABD9" KeyPath="yes" Source="$(var.ScriptPath)\RebootTask.ps1" />
+            </Component>
+            <Component Id="cmp612D59B6999CB719EF9748FCEE43F89B" Guid="{EFC1C19F-3314-470B-B1E2-CFF7B84645A5}">
+                <File Id="fil26ACB9567E2A8203F28CA8516BA08D6A" KeyPath="yes" Source="$(var.ScriptPath)\RenameComputer.ps1" />
+            </Component>
+            <Component Id="cmp04A30B05F28DAD7A51A3B2247C2DA81D" Guid="{91BE6E10-B27D-4732-B513-A3F6D08DA213}">
+                <File Id="fil0C243C51B158373FA02CFDF7B9A87B9B" KeyPath="yes" Source="$(var.ScriptPath)\RenameComputerCreateDomainSample.ps1" />
+            </Component>
+            <Component Id="cmp2CB7ADD27E620F6E54F1A1F06B2DE769" Guid="{6F1AB5EC-31FE-46D0-A22B-1B2C808BE6B2}">
+                <File Id="filF1468D6AAB580E97C729DE0FB6ABF039" KeyPath="yes" Source="$(var.ScriptPath)\RenameComputerJoinDomainSample.ps1" />
+            </Component>
+            <Component Id="cmp48D194BF1602BDDA5216C1FC4254A621" Guid="{3C0FA97D-7FA5-47AA-80C0-5CE46D0DC649}">
+                <File Id="fil83214A1A57A14479CBE9DF1550AB00A1" KeyPath="yes" Source="$(var.ScriptPath)\SetDnsConfiguration.ps1" />
+            </Component>
+            <Component Id="cmp36B09C9CC37D173D936F63A083D0AD1E" Guid="{3FCF33ED-7B33-4FEA-89C0-BD48A925CBDF}">
+                <File Id="fil4E9D84B4369D6C881177C61F10F78BA1" KeyPath="yes" Source="$(var.ScriptPath)\unattend-template.txt" />
+            </Component>
+            <Component Id="cmp674DB21A0D1AD64F79136E134F9473FC" Guid="{0433B9A2-EBEE-44FD-B99A-0E31A7F20598}">
+                <File Id="fil68CBB4F2ED03473F167A2E27C848F29B" KeyPath="yes" Source="$(var.ScriptPath)\Utilities.ps1" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="ScriptLibrary">
+            <ComponentRef Id="cmp7FAC36AF1FB58E7DC56FAA24734D3D4B" />
+            <ComponentRef Id="cmp1042C63E4A554E760BADFBD3F6E30A65" />
+            <ComponentRef Id="cmp144A9D35F3A6C27E228ADCA659AEFC5A" />
+            <ComponentRef Id="cmp80E4D991E152CFDE6C6F960CDC09A736" />
+            <ComponentRef Id="cmp612D59B6999CB719EF9748FCEE43F89B" />
+            <ComponentRef Id="cmp04A30B05F28DAD7A51A3B2247C2DA81D" />
+            <ComponentRef Id="cmp2CB7ADD27E620F6E54F1A1F06B2DE769" />
+            <ComponentRef Id="cmp48D194BF1602BDDA5216C1FC4254A621" />
+            <ComponentRef Id="cmp36B09C9CC37D173D936F63A083D0AD1E" />
+            <ComponentRef Id="cmp674DB21A0D1AD64F79136E134F9473FC" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

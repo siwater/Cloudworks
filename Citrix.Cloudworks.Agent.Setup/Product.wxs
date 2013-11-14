@@ -5,10 +5,11 @@
     <Package InstallerVersion="200"
              Description="Citrix Cloudworks Agent Installer"
              Compressed="yes"
+             Platform="x64"
              InstallScope="perMachine" />
     <Icon Id="XenDesktop_Combo_All.ico" SourceFile="000_XenDesktop_Combo_All.ico"/>
     <Property Id="ARPPRODUCTICON" Value="XenDesktop_Combo_All.ico"/>
-    <Property Id="ARPHELPLINK" Value="http://community.citrix.com/stackmate" />
+    <Property Id="ARPHELPLINK" Value="http://community.citrix.com/cloudworks" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes"/>
@@ -16,35 +17,44 @@
     <!-- Require administrator privileges -->
     <Condition Message="You need to be an administrator to install this product.">Privileged</Condition>
 
-    <!-- Require .NET 4.5 to install -->
-    <PropertyRef Id="NETFRAMEWORK45" />
-    <Condition Message='This setup requires the .NET Framework 4.5 be installed.'>
-      <![CDATA[(Installed OR NETFRAMEWORK45)]]>
+    <!-- Require .NET 3.5 to install -->
+    <PropertyRef Id="NETFRAMEWORK35" />
+    <Condition Message='This setup requires the .NET Framework 3.5 be installed.'>
+      <![CDATA[(Installed OR NETFRAMEWORK35)]]>
     </Condition>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLFOLDER1" Name="Citrix">
-          <Directory Id="INSTALLFOLDER2" Name="Cloudworks">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="CITRIXFOLDER" Name="Citrix">
+          <Directory Id="CFNFOLDER" Name="cfn-bootstrap" />
+          <Directory Id="CLOUDWORKSFOLDER" Name="Cloudworks">
             <Directory Id="INSTALLFOLDER" Name="Agent" />
+            <Directory Id="SCRIPTFOLDER" Name="Scripts" />
           </Directory>
         </Directory>
       </Directory>
     </Directory>
 
-    <Feature Id="ProductFeature" Title="Citrix Cloudworks Agent" Level="1">
+    <Feature Id="Cloudworks.Agent" Title="Citrix Cloudworks Agent" Level="1">
       <ComponentGroupRef Id="Citrix.Cloudworks.Agent_Project" />
       <ComponentRef Id="ServiceProcess"/>
-      <ComponentRef Id="RegistryEntries"/>
+      <ComponentRef Id="PathVariable"/>
     </Feature>
     
-    <Component Id="RegistryEntries" Guid="8056406d-cd9a-43a4-91cf-a15847943400" Directory="INSTALLFOLDER" KeyPath="yes">
-      <RegistryKey Root="HKLM" Key="Software\Policies\Citrix\Cloudworks" ForceDeleteOnUninstall="yes">
-      </RegistryKey>
+    <Feature Id="Cloudworks.Scripts" Title="Citrix Cloudworks Scripts" Level="1">
+      <ComponentGroupRef Id="ScriptLibrary" />
+    </Feature>
+
+    <Feature Id="Cfn.Bootstrap" Title="Amazon CFN bootstrap scripts" Level="1">
+      <ComponentGroupRef Id="CfnBootstrap" />
+    </Feature>
+
+    <Component Id="PathVariable" Directory="INSTALLFOLDER" Guid="2ff15711-821a-4b71-8b53-32f4100fc31b" KeyPath="yes">
+      <Environment Id="Env" Name="=PATH" Part="last" Value="[CFNFOLDER];[SCRIPTSFOLDER]" Action="set" System="yes"/>
     </Component>
-    
-    <Component Id="ServiceProcess" Directory="INSTALLFOLDER">
-      <File Id="Citrix.Cloudworks.Agent.exe" Name="Citrix.Cloudworks.Agent.exe" Source="$(var.BasePath)\Citrix.Cloudworks.Agent.exe" Vital="yes" KeyPath="yes" DiskId="1"/>
+   
+    <Component Id="ServiceProcess" Directory="INSTALLFOLDER" Win64="yes">
+      <File Id="Citrix.Cloudworks.Agent.exe" Name="Citrix.Cloudworks.Agent.exe" Source="$(var.BinPath)\Citrix.Cloudworks.Agent.exe" Vital="yes" KeyPath="yes" DiskId="1"/>
         
       <ServiceInstall
           Id="ServiceInstaller" 

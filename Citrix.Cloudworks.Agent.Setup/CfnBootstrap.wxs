@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="CFNFOLDER">
+            <Component Id="cmpBA103DE8A3D9C3F9606841158E312BC4" Guid="{4AB3B2D5-C96E-4EDE-8CC3-A5FF989BF176}">
+                <File Id="fil8A5930A9C2D482A7E5119BD1723A9F41" KeyPath="yes" Source="$(var.CfnBootstrapPath)\API-MS-Win-Core-LocalRegistry-L1-1-0.dll" />
+            </Component>
+            <Component Id="cmpE8AFA1255E9A9455C3DB6BBB93C68F1F" Guid="{307A7EF9-A3B3-4232-BB67-2640A216AEB9}">
+                <File Id="fil3771D671C619C558F402388937CDA42D" KeyPath="yes" Source="$(var.CfnBootstrapPath)\bz2.pyd" />
+            </Component>
+            <Component Id="cmpB588B2AA350F62171A4196C34F8FD73A" Guid="{805DA280-FC79-47A1-9D42-EDEB41078F7E}">
+                <File Id="fil0989E56858160EA20F0EF7CEBD626B99" KeyPath="yes" Source="$(var.CfnBootstrapPath)\cacert.pem" />
+            </Component>
+            <Component Id="cmp04E5F9CA088887332F320C44049E2788" Guid="{7FCD6555-5906-4D23-98DD-381A560F58F6}">
+                <File Id="fil43CCEAFFFE049B471E36FC25037C6DE9" KeyPath="yes" Source="$(var.CfnBootstrapPath)\cfn-elect-cmd-leader.exe" />
+            </Component>
+            <Component Id="cmpFFF0B97684AE46EBE750642CE9AC7656" Guid="{8460BC54-D05F-4CEC-9CC2-D209220F849F}">
+                <File Id="filC11D08B8D32F58A2A174F0B405230032" KeyPath="yes" Source="$(var.CfnBootstrapPath)\cfn-get-metadata.exe" />
+            </Component>
+            <Component Id="cmp92F09DC0B072D4E3E85C9F90D6DBDF33" Guid="{58A04493-DC73-42E6-B4C3-12192DC76016}">
+                <File Id="filB595D3D3E06CA196E6231CFBC68CB33E" KeyPath="yes" Source="$(var.CfnBootstrapPath)\cfn-hup.exe" />
+            </Component>
+            <Component Id="cmp667678261F8B1DA7E0E08AB3E64C9CDE" Guid="{5FF48652-C739-4E52-A9A1-FABCA4687817}">
+                <File Id="filD186DDADACCAE81DD8DA88E1A75433AD" KeyPath="yes" Source="$(var.CfnBootstrapPath)\cfn-init.exe" />
+            </Component>
+            <Component Id="cmp525B0C179F2C1F52591723985434981F" Guid="{F378ECFD-BDBE-44E9-B1F7-F6BB94E09653}">
+                <File Id="fil5577506ADAF70D63D6D524516E212C22" KeyPath="yes" Source="$(var.CfnBootstrapPath)\cfn-send-cmd-result.exe" />
+            </Component>
+            <Component Id="cmpBB0A2963033A548FD32D8BD27F3E1F52" Guid="{691674BB-154C-4366-B944-14E85C63D0F5}">
+                <File Id="fil3DEEA5FF3102D536C868749F36CF5F4C" KeyPath="yes" Source="$(var.CfnBootstrapPath)\cfn-signal.exe" />
+            </Component>
+            <Component Id="cmpA862B501D74FC454536559EDAA29C59E" Guid="{EC96D8E8-CA5E-4249-A0C5-8F59424F43CC}">
+                <File Id="fil96A0FDB30567CA5C7F859FEAA05EB41B" KeyPath="yes" Source="$(var.CfnBootstrapPath)\is_ec2.exe" />
+            </Component>
+            <Component Id="cmp0A096FB9AEC42E4CFFD7AEBFB4F2F1B0" Guid="{57CC58B0-2684-42A8-AC62-40D022118275}">
+                <File Id="filDC7AEB9D9BE49B7D17F400BE52DFAA01" KeyPath="yes" Source="$(var.CfnBootstrapPath)\library.zip" />
+            </Component>
+            <Component Id="cmp0F69A0D1C71D9ABC9D956B1084204689" Guid="{CA08F3EE-3329-458A-B144-522FB547F3F7}">
+                <File Id="fil87E636F0D00A7F7634A74F41AA17410B" KeyPath="yes" Source="$(var.CfnBootstrapPath)\LICENSE.rtf" />
+            </Component>
+            <Component Id="cmp708D7503A560F4EFC2B2122896936DCC" Guid="{D7401687-26D5-4F21-A63A-8CE92D7584C9}">
+                <File Id="fil76299575C11B9DBD9537122658F8FA69" KeyPath="yes" Source="$(var.CfnBootstrapPath)\mfc90.dll" />
+            </Component>
+            <Component Id="cmp793EA334EA2E8B9E92CC471B957D2D7D" Guid="{CE0B88B7-9E1A-4717-917F-B6A90D9D1012}">
+                <File Id="fil1E50A5D8F38B2DEBF1270EDDC63E06BF" KeyPath="yes" Source="$(var.CfnBootstrapPath)\MPR.dll" />
+            </Component>
+            <Component Id="cmp90EC3FC25A9201651A4EE331E4066833" Guid="{0491CD63-E3E4-4584-A408-CEF449EF65AF}">
+                <File Id="fil15DCEB8891252C5C74A3CACC71BC62B8" KeyPath="yes" Source="$(var.CfnBootstrapPath)\NOTICE.txt" />
+            </Component>
+            <Component Id="cmpAAF0308DF6BB5FF1D5AE2FC8476E7B94" Guid="{CAA58309-E105-488B-8B4F-DCA0E6F71D5E}">
+                <File Id="fil24566E4CECAE67DF3FA950CCE1A4452C" KeyPath="yes" Source="$(var.CfnBootstrapPath)\perfmon.pyd" />
+            </Component>
+            <Component Id="cmp0723DCB86BC96F93B9832F4308D52E18" Guid="{AD5B49E4-EA81-4A34-9EF1-C88FD2C28B72}">
+                <File Id="fil00D8BBC4E5CCC209AF648CA2B7C016DB" KeyPath="yes" Source="$(var.CfnBootstrapPath)\pyexpat.pyd" />
+            </Component>
+            <Component Id="cmp3A0F13511D8A974084564A17449B88D0" Guid="{1870BEAD-12A1-4698-A5BC-8F358977C9B3}">
+                <File Id="fil8321C35F81F540C1B4102DDEC018919A" KeyPath="yes" Source="$(var.CfnBootstrapPath)\python27.dll" />
+            </Component>
+            <Component Id="cmp13DCAE17DB51DF86804180DE4A07C1EA" Guid="{AAB897BD-7451-4269-9D06-481CEDE57C8B}">
+                <File Id="fil68225B59D1E62A643A4D8868740AB35C" KeyPath="yes" Source="$(var.CfnBootstrapPath)\pythoncom27.dll" />
+            </Component>
+            <Component Id="cmp7A13D5F71DCB1454C39FA444E7D83E08" Guid="{50A1F3F4-469E-4184-8776-EB36C49D4F95}">
+                <File Id="fil7EC9ADB2C1D78E84AC58DD7853C84654" KeyPath="yes" Source="$(var.CfnBootstrapPath)\pywintypes27.dll" />
+            </Component>
+            <Component Id="cmp78F46A5E9203CA9506CB5DA8BE8F36C6" Guid="{C082CE41-CED8-4C6E-B88A-3D4AC9220357}">
+                <File Id="fil63BFA6AB0DC3D56E669A35CFB0F24363" KeyPath="yes" Source="$(var.CfnBootstrapPath)\select.pyd" />
+            </Component>
+            <Component Id="cmp38C7EBCA13193A76B35035297D39A617" Guid="{8355E3A9-B57E-4A80-8371-7D859CB8989B}">
+                <File Id="filB541F254AE492F9D3D7F54BDF0A7927E" KeyPath="yes" Source="$(var.CfnBootstrapPath)\servicemanager.pyd" />
+            </Component>
+            <Component Id="cmp2A12335AE34DD834EF60CC9DB9D97A79" Guid="{E42DC706-971B-466D-A6F4-A26C45ADC165}">
+                <File Id="filF42276DF94AF687285BAA746BDC06DF8" KeyPath="yes" Source="$(var.CfnBootstrapPath)\unicodedata.pyd" />
+            </Component>
+            <Component Id="cmp5CECB4B33823C20681846BD5E5908407" Guid="{61315B42-3E87-48A6-9B20-E136DAAB5E22}">
+                <File Id="fil97F15990DEA89ADA3465FD79FCFB53DD" KeyPath="yes" Source="$(var.CfnBootstrapPath)\win32api.pyd" />
+            </Component>
+            <Component Id="cmpD87B80AB6A6BFB8146C1F04F176CC4D1" Guid="{5796ED07-CEF6-4546-9C0A-474BE307222C}">
+                <File Id="filFAF21F7D9E01317097A1C5DEC84A4061" KeyPath="yes" Source="$(var.CfnBootstrapPath)\win32event.pyd" />
+            </Component>
+            <Component Id="cmpC0A2FC56CEC6039FABCB46F5D92A94AF" Guid="{CC0E44DC-520A-47D5-80E0-D717F61EF7F6}">
+                <File Id="fil9C3AF501638FEBD0B88F52A139D2AC9D" KeyPath="yes" Source="$(var.CfnBootstrapPath)\win32evtlog.pyd" />
+            </Component>
+            <Component Id="cmp3D16D7B647B19EA1E57EFC67815B6D32" Guid="{6F9C5962-BEDE-4746-9FF7-793F6A9335B1}">
+                <File Id="filD3D53E4C8DE7DB3623653E8B971AE38B" KeyPath="yes" Source="$(var.CfnBootstrapPath)\win32pipe.pyd" />
+            </Component>
+            <Component Id="cmp7B1BC0FC5CE33A7575B3434FB7F0A6DF" Guid="{DE2DBA05-8D16-4814-8527-7C179F94DA86}">
+                <File Id="fil359344EB2795C9999CA47A0085267FC0" KeyPath="yes" Source="$(var.CfnBootstrapPath)\win32service.pyd" />
+            </Component>
+            <Component Id="cmpEBB55FEBFFA3227C23C6834BA1CEF7E9" Guid="{8913AE7E-A843-4BFA-A4F7-72134EA501B8}">
+                <File Id="fil26F8DEA5C7BC060FF7DC481B76D65093" KeyPath="yes" Source="$(var.CfnBootstrapPath)\win32ui.pyd" />
+            </Component>
+            <Component Id="cmp722A8EC5A3E3C2D34052786F057BC922" Guid="{2CF2BC59-E694-4F68-A194-81A38D4AE391}">
+                <File Id="filEF7528459F8264AC265664DC8DA2ED50" KeyPath="yes" Source="$(var.CfnBootstrapPath)\win32wnet.pyd" />
+            </Component>
+            <Component Id="cmpEA9E55D4C2F3590B8EFA1A02C42FAB58" Guid="{0DBC008A-5682-4A2C-B366-6A2A8DAE90CE}">
+                <File Id="filBE54CD3538A230823AC800FF3A342655" KeyPath="yes" Source="$(var.CfnBootstrapPath)\winhup.exe" />
+            </Component>
+            <Component Id="cmp7D331981CFA4E5FBAFB93C6D896A083C" Guid="{1A9E571F-A1E7-4711-9331-AB5221AEB91A}">
+                <File Id="filD26DE73ADC7C5231DA5AA987BE813A9C" KeyPath="yes" Source="$(var.CfnBootstrapPath)\_bsddb.pyd" />
+            </Component>
+            <Component Id="cmp8CEC97C8B747F6313B1BD7C839647CCE" Guid="{6278FD6D-D3E1-4E8C-9D60-07E4150B2F87}">
+                <File Id="fil19E00E1729F362CDE1DE9E109175FEB2" KeyPath="yes" Source="$(var.CfnBootstrapPath)\_ctypes.pyd" />
+            </Component>
+            <Component Id="cmp0B2E6C77D65BD6B65BE90C5F4769946E" Guid="{B9C5449E-A2F5-4F05-BB2E-C780E59FA051}">
+                <File Id="filCB4CD19C241E7E467DB9CF876AE59F55" KeyPath="yes" Source="$(var.CfnBootstrapPath)\_hashlib.pyd" />
+            </Component>
+            <Component Id="cmpF07B12A500663995C5B3D0226A0A9546" Guid="{035E076C-A6B8-4957-9738-46D4A3058FB8}">
+                <File Id="fil59115A206A327A4D8DD60B816D2B2DA1" KeyPath="yes" Source="$(var.CfnBootstrapPath)\_socket.pyd" />
+            </Component>
+            <Component Id="cmpD00A97E65668EF7ED2609FABF0B65A21" Guid="{70E3C685-14A4-421D-8F50-7C19BFDBBBAD}">
+                <File Id="fil8DA39AF4426BD6CCB6124DF75A99B97F" KeyPath="yes" Source="$(var.CfnBootstrapPath)\_ssl.pyd" />
+            </Component>
+            <Component Id="cmpE0DBF3B49D81EC79D188475A70DFE986" Guid="{718F29AD-00F8-42CD-91DB-E891F5CA9939}">
+                <File Id="fil70ACA0514B4C6DA6ADD76ED212462357" KeyPath="yes" Source="$(var.CfnBootstrapPath)\_win32sysloader.pyd" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="CfnBootstrap">
+            <ComponentRef Id="cmpBA103DE8A3D9C3F9606841158E312BC4" />
+            <ComponentRef Id="cmpE8AFA1255E9A9455C3DB6BBB93C68F1F" />
+            <ComponentRef Id="cmpB588B2AA350F62171A4196C34F8FD73A" />
+            <ComponentRef Id="cmp04E5F9CA088887332F320C44049E2788" />
+            <ComponentRef Id="cmpFFF0B97684AE46EBE750642CE9AC7656" />
+            <ComponentRef Id="cmp92F09DC0B072D4E3E85C9F90D6DBDF33" />
+            <ComponentRef Id="cmp667678261F8B1DA7E0E08AB3E64C9CDE" />
+            <ComponentRef Id="cmp525B0C179F2C1F52591723985434981F" />
+            <ComponentRef Id="cmpBB0A2963033A548FD32D8BD27F3E1F52" />
+            <ComponentRef Id="cmpA862B501D74FC454536559EDAA29C59E" />
+            <ComponentRef Id="cmp0A096FB9AEC42E4CFFD7AEBFB4F2F1B0" />
+            <ComponentRef Id="cmp0F69A0D1C71D9ABC9D956B1084204689" />
+            <ComponentRef Id="cmp708D7503A560F4EFC2B2122896936DCC" />
+            <ComponentRef Id="cmp793EA334EA2E8B9E92CC471B957D2D7D" />
+            <ComponentRef Id="cmp90EC3FC25A9201651A4EE331E4066833" />
+            <ComponentRef Id="cmpAAF0308DF6BB5FF1D5AE2FC8476E7B94" />
+            <ComponentRef Id="cmp0723DCB86BC96F93B9832F4308D52E18" />
+            <ComponentRef Id="cmp3A0F13511D8A974084564A17449B88D0" />
+            <ComponentRef Id="cmp13DCAE17DB51DF86804180DE4A07C1EA" />
+            <ComponentRef Id="cmp7A13D5F71DCB1454C39FA444E7D83E08" />
+            <ComponentRef Id="cmp78F46A5E9203CA9506CB5DA8BE8F36C6" />
+            <ComponentRef Id="cmp38C7EBCA13193A76B35035297D39A617" />
+            <ComponentRef Id="cmp2A12335AE34DD834EF60CC9DB9D97A79" />
+            <ComponentRef Id="cmp5CECB4B33823C20681846BD5E5908407" />
+            <ComponentRef Id="cmpD87B80AB6A6BFB8146C1F04F176CC4D1" />
+            <ComponentRef Id="cmpC0A2FC56CEC6039FABCB46F5D92A94AF" />
+            <ComponentRef Id="cmp3D16D7B647B19EA1E57EFC67815B6D32" />
+            <ComponentRef Id="cmp7B1BC0FC5CE33A7575B3434FB7F0A6DF" />
+            <ComponentRef Id="cmpEBB55FEBFFA3227C23C6834BA1CEF7E9" />
+            <ComponentRef Id="cmp722A8EC5A3E3C2D34052786F057BC922" />
+            <ComponentRef Id="cmpEA9E55D4C2F3590B8EFA1A02C42FAB58" />
+            <ComponentRef Id="cmp7D331981CFA4E5FBAFB93C6D896A083C" />
+            <ComponentRef Id="cmp8CEC97C8B747F6313B1BD7C839647CCE" />
+            <ComponentRef Id="cmp0B2E6C77D65BD6B65BE90C5F4769946E" />
+            <ComponentRef Id="cmpF07B12A500663995C5B3D0226A0A9546" />
+            <ComponentRef Id="cmpD00A97E65668EF7ED2609FABF0B65A21" />
+            <ComponentRef Id="cmpE0DBF3B49D81EC79D188475A70DFE986" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>
