@@ -1,35 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Citrix.Cloudworks.Agent.Services {
     
     /// <summary>
     /// Utility class to record the state of user data processing. To ensure 
     /// user-data scripts are not repeatedly executed on reboot a flag is written into the
-    /// registry when initialisation is complete.
+    /// file system when initialisation is complete.
     /// </summary>
-    public static class UserDataState {
+    public class UserDataState {
 
-        private const string CacheKey = "SOFTWARE\\Policies\\Citrix\\StackMate";
-        private const string CacheName = "InitialisationComplete";
+        private string StateFile;
 
-        private static PersistentCache _PersitentCache;
-
-        static UserDataState() {
-            _PersitentCache = new PersistentCache(CacheKey, CacheName);
+        public UserDataState(string dir) {
+            if (!Directory.Exists(dir)) {
+                Directory.CreateDirectory(dir);
+            }
+            StateFile = Path.Combine(dir, "init-done");
         }
 
-        public static bool InitialisationComplete {
+        public bool InitialisationComplete {
             get {
-                bool result = true;
-                bool.TryParse(_PersitentCache.Read(), out result);
-                return result;
+               return File.Exists(StateFile);
             }
             set {
-                _PersitentCache.Write(value.ToString());
+               File.Create(StateFile);
             }
         }
 

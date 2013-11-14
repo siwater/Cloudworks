@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -22,8 +21,8 @@ namespace Citrix.Cloudworks.Agent {
         private const string ExecutionPolicyKey = "ExecutionPolicy";
 
 
-        public static string SetPowerShellExectionPolicy(string policy, RegistryView registryView = RegistryView.Default) {
-            RegistryKey HKLM = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, registryView);
+        public static string SetPowerShellExectionPolicy(string policy) {
+            RegistryKey HKLM = Registry.LocalMachine;
             RegistryKey policyKey = HKLM.CreateSubKey(PowerShellSettingsKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
             string oldPolicy = policyKey.GetValue(ExecutionPolicyKey) as string;
             policyKey.SetValue(ExecutionPolicyKey, policy);

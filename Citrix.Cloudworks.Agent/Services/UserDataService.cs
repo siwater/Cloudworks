@@ -8,7 +8,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -29,25 +28,23 @@ namespace Citrix.Cloudworks.Agent.Services {
 
         private string userDataUrl;
         private string cfnFolder;
-        private CancellationTokenSource cancellationTokenSource;
-        private Task initTask;
+        private bool stopSignalled;
+        private UserDataState stateService;
 
         #region Constructors
 
         public UserDataService() {
-
+            
             userDataUrl = ConfigurationManager.AppSettings["user-data-url"];
             if (string.IsNullOrEmpty(userDataUrl)) {
                 userDataUrl = DefaultUserDataUrl;
-            }
-            if (userDataUrl.Contains(DhcpServerPlaceholder)) {
-                List<IPAddress> dhcpServers = NetworkUtilities.GetDhcpServers();
             }
 
             cfnFolder = ConfigurationManager.AppSettings["cfn-folder"];
             if (string.IsNullOrEmpty(cfnFolder)) {
                 cfnFolder = DefaultCfnFolder;
             }
+            stateService = new UserDataState(cfnFolder);
             CtxTrace.TraceVerbose("UserData Url {0}, CFN folder {1}", userDataUrl, cfnFolder);
         }
 
@@ -57,20 +54,20 @@ namespace Citrix.Cloudworks.Agent.Services {
 
         public void Start() {
             CtxTrace.TraceInformation();
-            cancellationTokenSource = new CancellationTokenSource();
-            initTask = Task.Factory.StartNew(() => ProcessUserDataTask(), cancellationTokenSource.Token);
+            stopSignalled = false;
+            ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessUserDataTask));
         }
 
         public void Stop() {
             CtxTrace.TraceInformation();
-            cancellationTokenSource.Cancel();
+            stopSignalled = true;
         }
 
         #endregion
 
         #region Private Tasks
 
-        private void ProcessUserDataTask() {
+        private void ProcessUserDataTask(object ignored) {
             CtxTrace.TraceInformation();
 
             // Check sanity of configuration
@@ -78,14 +75,16 @@ namespace Citrix.Cloudworks.Agent.Services {
                 List<IPAddress> dhcpServers = NetworkUtilities.GetDhcpServers();
                 if (dhcpServers.Count == 0) {
                     CtxTrace.TraceError("Configured to get UserData from DHCP server, but no DHCP server found");
-                    UserDataState.InitialisationComplete = true;
+                    stateService.InitialisationComplete = true;
                 }
             }
 
             // UserData may be a little slow to be delivered
-            while (!UserDataState.InitialisationComplete && !cancellationTokenSource.Token.IsCancellationRequested) {
+            while (!stateService.InitialisationComplete && !stopSignalled) {
                 string userData = GetUserData();
                 if (userData != null) {
+                    // Script may initiate a reboot, so mark the processing done early.
+                    stateService.InitialisationComplete = true;
                     try {
                         XDocument doc = XDocument.Parse(userData);
                         XElement script = doc.XPathSelectElement("//script");
@@ -99,13 +98,12 @@ namespace Citrix.Cloudworks.Agent.Services {
                         }
                     } catch (Exception ex) {
                         CtxTrace.TraceError(ex);
-                    }
-                    UserDataState.InitialisationComplete = true;
+                    }                  
                     break;
                 }
                 // Sleep a while but ensure timely response to task cancel
                 DateTime waitUntil = DateTime.Now + TimeSpan.FromSeconds(5);
-                while (!cancellationTokenSource.Token.IsCancellationRequested && (DateTime.Now < waitUntil)) {
+                while (!stopSignalled && (DateTime.Now < waitUntil)) {
                     Thread.Sleep(TimeSpan.FromMilliseconds(1000));
                 }
             }
@@ -151,10 +149,9 @@ namespace Citrix.Cloudworks.Agent.Services {
 
         private void ExecutePowerShellScript(string contents) {
             CtxTrace.TraceInformation();
-            RegistryView view = RegistryView.Registry32;
             string oldPolicy = null;
             try {
-                oldPolicy = ScriptUtilities.SetPowerShellExectionPolicy("Unrestricted", view);
+                oldPolicy = ScriptUtilities.SetPowerShellExectionPolicy("Unrestricted");
                 string dir = CreateTempDirectory(cfnFolder);
                 string fileName = Path.Combine(dir, "user-data.ps1");
                 File.WriteAllText(fileName, contents);
@@ -163,7 +160,7 @@ namespace Citrix.Cloudworks.Agent.Services {
                 CtxTrace.TraceError(e);
             } finally {
                 if (oldPolicy != null) {
-                    ScriptUtilities.SetPowerShellExectionPolicy(oldPolicy, view);
+                    ScriptUtilities.SetPowerShellExectionPolicy(oldPolicy);
                 }
             }
         }
