@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using Citrix.Diagnostics;
 using Citrix.Cloudworks.Agent;
@@ -18,8 +17,7 @@ namespace Citrix.Cloudworks.Agent.Host {
 
             CtxTrace.Initialize("stackmate-agent-host", true);
             CloudworksServices svc = new CloudworksServices();
-         
-            UserDataState.InitialisationComplete = false;
+            new UserDataState("C:\\cfn").InitialisationComplete = false;
 
             svc.Start();
             Console.WriteLine("Agent is running");
