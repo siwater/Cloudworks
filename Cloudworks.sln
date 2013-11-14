@@ -11,6 +11,24 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Citrix.Cloudworks.Agent.Set
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Citrix.Cloudworks.TestClient", "Citrix.Cloudworks.TestClient\Citrix.Cloudworks.TestClient.csproj", "{038A9DC7-2CC1-4FBD-B81A-DE9E43E4C4E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStack.SDK", "..\cloudstack_dotnetsdk\CloudStack.SDK\CloudStack.SDK.csproj", "{17A9FE85-5623-469B-8041-F44CF404F3AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScriptLibrary", "ScriptLibrary", "{196488E7-12F2-4F3E-BDE0-8E2DA76CFDBC}"
+	ProjectSection(SolutionItems) = preProject
+		ScriptLibrary\CreateDomain.ps1 = ScriptLibrary\CreateDomain.ps1
+		ScriptLibrary\GetDnsConfiguration.ps1 = ScriptLibrary\GetDnsConfiguration.ps1
+		ScriptLibrary\JoinDomain.ps1 = ScriptLibrary\JoinDomain.ps1
+		ScriptLibrary\RebootTask.ps1 = ScriptLibrary\RebootTask.ps1
+		ScriptLibrary\RenameComputer.ps1 = ScriptLibrary\RenameComputer.ps1
+		ScriptLibrary\RenameComputerCreateDomainSample.ps1 = ScriptLibrary\RenameComputerCreateDomainSample.ps1
+		ScriptLibrary\RenameComputerJoinDomainSample.ps1 = ScriptLibrary\RenameComputerJoinDomainSample.ps1
+		ScriptLibrary\SetDnsConfiguration.ps1 = ScriptLibrary\SetDnsConfiguration.ps1
+		ScriptLibrary\unattend-template.txt = ScriptLibrary\unattend-template.txt
+		ScriptLibrary\Utilities.ps1 = ScriptLibrary\Utilities.ps1
+	EndProjectSection
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "aws-cfn-bootstrap-1.3", "aws-cfn-bootstrap-1.3\aws-cfn-bootstrap-1.3.pyproj", "{26AA661F-8013-4EA5-95AD-DC4897EB3507}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,7 +71,6 @@ Global
 		{C63F763C-BE0A-4D2D-B139-4965952085F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{DF61DD50-CD17-48F7-9800-9370BEDE6F26}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{DF61DD50-CD17-48F7-9800-9370BEDE6F26}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{DF61DD50-CD17-48F7-9800-9370BEDE6F26}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{DF61DD50-CD17-48F7-9800-9370BEDE6F26}.Debug|x86.ActiveCfg = Debug|x86
 		{DF61DD50-CD17-48F7-9800-9370BEDE6F26}.Debug|x86.Build.0 = Debug|x86
 		{DF61DD50-CD17-48F7-9800-9370BEDE6F26}.Release|Any CPU.ActiveCfg = Release|x86
@@ -71,6 +88,26 @@ Global
 		{038A9DC7-2CC1-4FBD-B81A-DE9E43E4C4E6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{038A9DC7-2CC1-4FBD-B81A-DE9E43E4C4E6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{038A9DC7-2CC1-4FBD-B81A-DE9E43E4C4E6}.Release|x86.ActiveCfg = Release|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{17A9FE85-5623-469B-8041-F44CF404F3AE}.Release|x86.ActiveCfg = Release|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
