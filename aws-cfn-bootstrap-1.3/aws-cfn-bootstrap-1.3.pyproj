@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{26aa661f-8013-4ea5-95ad-dc4897eb3507}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>setup.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Content Include="setup.py" />
+    <Content Include="bin-py\cfn-elect-cmd-leader.py" />
+    <Content Include="bin-py\cfn-get-metadata.py" />
+    <Content Include="bin-py\cfn-hup.py" />
+    <Content Include="bin-py\cfn-init.py" />
+    <Content Include="bin-py\cfn-send-cmd-result.py" />
+    <Content Include="bin-py\cfn-signal.py" />
+    <Content Include="cfnbootstrap\adaptor.py" />
+    <Content Include="cfnbootstrap\apt_tool.py" />
+    <Content Include="cfnbootstrap\auth.py" />
+    <Content Include="cfnbootstrap\aws_client.py" />
+    <Content Include="cfnbootstrap\cfn_client.py" />
+    <Content Include="cfnbootstrap\command_tool.py" />
+    <Content Include="cfnbootstrap\construction.py" />
+    <Content Include="cfnbootstrap\construction_errors.py" />
+    <Content Include="cfnbootstrap\file_tool.py" />
+    <Content Include="cfnbootstrap\lang_package_tools.py" />
+    <Content Include="cfnbootstrap\msi_tool.py" />
+    <Content Include="cfnbootstrap\platform_utils.py" />
+    <Content Include="cfnbootstrap\posix_security.py" />
+    <Content Include="cfnbootstrap\rpm_tools.py" />
+    <Content Include="cfnbootstrap\security.py" />
+    <Content Include="cfnbootstrap\service_tools.py" />
+    <Content Include="cfnbootstrap\sources_tool.py" />
+    <Content Include="cfnbootstrap\sqs_client.py" />
+    <Content Include="cfnbootstrap\update_hooks.py" />
+    <Content Include="cfnbootstrap\user_group_tools.py" />
+    <Content Include="cfnbootstrap\util.py" />
+    <Content Include="cfnbootstrap\winhup.py" />
+    <Content Include="cfnbootstrap\__init__.py" />
+    <Content Include="bin\cfn-elect-cmd-leader" />
+    <Content Include="bin\cfn-get-metadata" />
+    <Content Include="bin\cfn-hup" />
+    <Content Include="bin\cfn-init" />
+    <Content Include="bin\cfn-send-cmd-result" />
+    <Content Include="bin\cfn-signal" />
+    <Content Include="license\LICENSE.txt" />
+    <Content Include="license\NOTICE.txt" />
+    <Content Include="license\win\NOTICE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin" />
+    <Folder Include="bin-py" />
+    <Folder Include="cfnbootstrap" />
+    <Folder Include="license" />
+    <Folder Include="license\win" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <Target Name="Py2Exe">
+    <Message Text="Building Windows executables $(MSBuildToolsPath)"/>
+    <Exec Command="python setup.py py2exe" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="Py2Exe"/>
+  </Target>
+</Project>

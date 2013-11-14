@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+#-------------------------------------------------------------------------------
+# Name:        Is_Ec2
+# Purpose:
+#
+# Author:      Administrator
+#
+# Created:     30/10/2013
+# Copyright:   (c) Administrator 2013
+# Licence:     <your licence>
+#-------------------------------------------------------------------------------
+import requests
+
+def main():
+    try:
+        resp = requests.get("http://169.254.169.254/latest")
+        print ("Is EC2")
+    except IOError:
+        print ("Not EC2")
+
+
+if __name__ == '__main__':
+    main()
