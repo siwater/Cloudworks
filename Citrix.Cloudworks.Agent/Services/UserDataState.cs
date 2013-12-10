@@ -27,7 +27,13 @@ namespace Citrix.Cloudworks.Agent.Services {
                return File.Exists(StateFile);
             }
             set {
-               File.Create(StateFile);
+                if (value) {
+                    File.Create(StateFile);
+                } else {
+                    if (File.Exists(StateFile)) {
+                        File.Delete(StateFile);
+                    }
+                }
             }
         }
 

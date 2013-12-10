@@ -83,22 +83,25 @@ namespace Citrix.Cloudworks.Agent.Services {
             while (!stateService.InitialisationComplete && !stopSignalled) {
                 string userData = GetUserData();
                 if (userData != null) {
-                    // Script may initiate a reboot, so mark the processing done early.
+                    // Script may initiate a reboot, so mark the processing done once userData read.
                     stateService.InitialisationComplete = true;
+                    
+                    // May be multiple root elements, so wrap for Xml parser
+                    string wrappedUserData = string.Format("<dummyRoot>{0}</dummyRoot>", userData);
                     try {
-                        XDocument doc = XDocument.Parse(userData);
+                        XDocument doc = XDocument.Parse(wrappedUserData);
                         XElement script = doc.XPathSelectElement("//script");
                         if (script != null) {
                             ExecuteScript(script.Value);
-                        } else {
-                            script = doc.XPathSelectElement("//powershell");
-                            if (script != null) {
-                                ExecutePowerShellScript(script.Value);
-                            }
                         }
+                        script = doc.XPathSelectElement("//powershell");
+                        if (script != null) {
+                            ExecutePowerShellScript(script.Value);
+                        }
+
                     } catch (Exception ex) {
                         CtxTrace.TraceError(ex);
-                    }                  
+                    }                 
                     break;
                 }
                 // Sleep a while but ensure timely response to task cancel
@@ -129,19 +132,23 @@ namespace Citrix.Cloudworks.Agent.Services {
             }
         }
 
-        private string CreateTempDirectory(string baseFolder) {         
-            string tempDirectory = Path.Combine(baseFolder, Guid.NewGuid().ToString());
-            ScriptUtilities.CreateDirectory(tempDirectory);
-            return tempDirectory;
+        private string CreateWorkingDirectory(string baseFolder) {
+            string workingDirectory = Path.Combine(baseFolder, "user-data");
+            int i = 1;
+            while (Directory.Exists(workingDirectory)) {
+                 workingDirectory = Path.Combine(baseFolder, string.Format("user-data-{0}",i++));
+            }
+            ScriptUtilities.CreateDirectory(workingDirectory);
+            return workingDirectory;
         }
 
         private void ExecuteScript(string contents) {
             CtxTrace.TraceInformation();
             try {
-                string dir = CreateTempDirectory(cfnFolder);
+                string dir = CreateWorkingDirectory(cfnFolder);
                 string fileName = Path.Combine(dir, "user-data.cmd");
                 File.WriteAllText(fileName, contents);
-                ScriptUtilities.ExecuteProcess(fileName, null, dir);
+                ScriptUtilities.ExecuteProcess("cmd.exe", "/c " + fileName, dir);
             } catch (Exception e) {
                 CtxTrace.TraceError(e);
             }
@@ -152,7 +159,7 @@ namespace Citrix.Cloudworks.Agent.Services {
             string oldPolicy = null;
             try {
                 oldPolicy = ScriptUtilities.SetPowerShellExectionPolicy("Unrestricted");
-                string dir = CreateTempDirectory(cfnFolder);
+                string dir = CreateWorkingDirectory(cfnFolder);
                 string fileName = Path.Combine(dir, "user-data.ps1");
                 File.WriteAllText(fileName, contents);
                 ScriptUtilities.ExecuteProcess("powershell.exe", String.Format("-F {0}", fileName), dir);

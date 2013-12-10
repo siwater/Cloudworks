@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NetworkUtilities.cs" />
+    <Compile Include="ProcessWrapper.cs" />
     <Compile Include="ScriptUtilities.cs" />
     <Compile Include="Services\UserDataService.cs" />
     <Compile Include="Services\UserDataState.cs" />

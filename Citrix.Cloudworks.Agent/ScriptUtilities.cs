@@ -35,26 +35,13 @@ namespace Citrix.Cloudworks.Agent {
             }
         }
 
-        public static void ExecuteProcess(string executable, string args, string workingDirectory) {
-            ProcessStartInfo startInfo = new ProcessStartInfo() {
-                FileName = executable,
-                Arguments = args,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WorkingDirectory = workingDirectory
-            };
+        public static void ExecuteProcess(string executable, string args, string workingDirectory) {        
             try {
-                using (var process = Process.Start(startInfo)) {
-                    process.WaitForExit();
-                    File.WriteAllText(Path.Combine(workingDirectory, "stdout.log"), process.StandardOutput.ReadToEnd());
-                    File.WriteAllText(Path.Combine(workingDirectory, "stderr.log"), process.StandardError.ReadToEnd());
-                }
+                ProcessWrapper process = new ProcessWrapper(executable, args, workingDirectory);
+                process.Execute();             
             } catch (Exception e) {
                 CtxTrace.TraceError(e);
             }
         }
-   
     }
 }
