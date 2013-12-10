@@ -1,0 +1,8 @@
+[DCINSTALL]
+InstallDNS=yes
+ReplicaOrNewDomain=domain
+NewDomain=forest
+ForestLevel=4
+DomainLevel=4
+RebootOnCompletion=no
+UserName=Administrator
