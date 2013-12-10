@@ -1,0 +1,125 @@
+{
+	"AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "This template creates a new domain with a single domain controller",
+
+  "Parameters" : {
+		"KeyPairName" : {
+		"Description" : "Name of an existing Amazon EC2 key pair for RDP access",
+		"Default" : "simons_keypair",
+		"Type" : "String"
+    },
+		"InstanceType" : {
+			"Description" : "Amazon EC2 instance type",
+			"Type" : "String",
+			"Default" : "m1.large",
+			"AllowedValues" : [ "m1.small", "m1.medium", "m1.large", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "c1.medium", "c1.xlarge"]
+		},
+		"DomainDNSName" : {
+			"Description" : "Fully qualified domain name (FQDN) of the forest root domain e.g. corp.example.com",
+			"Type" : "String",
+			"Default" : "cloudworks.net",
+			"MinLength" : "3",
+			"MaxLength" : "25",
+			"AllowedPattern" : "[a-zA-Z0-9]+\\..+"
+		},
+		"SafeModePassword" : {
+			"Description" : "Password for the administrator account when the domain controller is started in Safe Mode",
+			"Type" : "String",
+			"Default" : "Citrix123",
+			"MinLength" : "8",
+			"MaxLength" : "32",
+			"NoEcho" : "True"
+		}
+  },
+
+  "Mappings" : {  
+    "AWSRegionArch2AMI" : {
+      "us-east-1"      : {"64" : "ami-e55a7e8c"},
+      "us-west-2"      : {"64" : "ami-eb58cbdb"},
+      "us-west-1"      : {"64" : "ami-76486033"},
+      "eu-west-1"      : {"64" : "ami-a1d6cad5"},
+      "ap-southeast-1" : {"64" : "ami-74aae326"},
+      "ap-southeast-2" : {"64" : "ami-bc3caf86"},
+      "ap-northeast-1" : {"64" : "ami-f14fdbf0"},
+      "sa-east-1"      : {"64" : "ami-aa00a5b7"}
+    }
+  },
+
+  "Resources" : {
+	
+	"DomainController": {  
+			"Type" : "AWS::EC2::Instance",
+			"Metadata" : {
+				"AWS::CloudFormation::Init" : {          
+					"config" : {
+						"sources" : {
+							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/scripts.zip" 
+						},          
+						"commands" : {												
+							"1-reset-password" : {
+								"command" :  { "Fn::Join" : [ "", [
+									"C:\\cfn\\scripts\\ResetLocalAccount.cmd -UserName Administrator -Password ",
+									{ "Ref" : "SafeModePassword" }
+								]]},
+								"waitAfterCompletion" : "0"
+							},				  
+							"2-rename-computer" : {
+								"command" : "C:\\cfn\\scripts\\RenameComputer.cmd -ComputerName DC01",
+								"waitAfterCompletion" : "forever"
+							},
+							"3-dcpromo" : {
+								"command" : { "Fn::Join" : [ "", [
+									"C:\\cfn\\scripts\\CreateDomain.cmd -DomainName ",
+									{ "Ref" : "DomainDNSName" },
+									" -SafeModePassword ",
+									{ "Ref" : "SafeModePassword" }						
+								]]},
+								"waitAfterCompletion" : "forever"
+							}					
+						}
+					}
+				}
+			},
+      
+			"Properties": {
+				"ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" }, "64" ] },
+				"InstanceType" : { "Ref" : "InstanceType" },
+				"SecurityGroups" : [ "default" ],
+				"KeyName" : { "Ref" : "KeyPairName" },
+				"UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
+					"<script>\n",  
+					"cfn-init.exe -v -s ", { "Ref" : "AWS::StackName" }, 
+					" -r DomainController ",       
+					" --region ", { "Ref" : "AWS::Region" }, "\n",
+					"cfn-signal.exe -e %ERRORLEVEL% \"", { "Ref" : "DomainControllerWaitHandle" }, "\"\n", 
+					"</script>"          
+				]]}}        
+			}
+		},
+
+	"DomainControllerWaitHandle" : {
+			"Type" : "AWS::CloudFormation::WaitConditionHandle"
+		},
+						
+	"DomainControllerWaitCondition" : {
+			"Type" : "AWS::CloudFormation::WaitCondition",
+			"DependsOn" : "DomainController",
+			"Properties" : {
+				"Handle" : {"Ref" : "DomainControllerWaitHandle"},
+				"Timeout" : "1800"
+			}
+		}
+    },
+
+	"Outputs" : {
+		"DomainControllerId" : {
+			"Value" : { "Ref" : "DomainController" },
+			"Description" : "Domain Controller Id"
+		},
+		"DomainControllerPrivateIP" : {
+			"Value" : { "Fn::GetAtt" : [ "DomainController", "PrivateIp" ] },
+			"Description" : "Domain Controller Private IP address"
+		}
+	}
+}

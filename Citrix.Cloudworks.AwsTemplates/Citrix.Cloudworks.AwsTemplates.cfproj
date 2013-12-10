@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{99999999-9999-9999-9999-999999999999}</ProjectGuid>
+    <AssemblyName>Citrix.Cloudworks.AwsTemplates</AssemblyName>
+    <Name>Citrix.Cloudworks.AwsTemplates</Name>
+    <RootNamespace>Citrix.Cloudworks.AwsTemplates</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Experimental LocalAppData -->
+    <CloudFormationPath Condition=" '$(CloudFormationPath)' == '' AND Exists('$(LocalAppData)\Microsoft\VisualStudio\10.0Exp\Extensions\Amazon Web Services\AWSToolkit.VS2010.Core\0.5.0.0\cloudformation.targets')">$(LocalAppData)\Microsoft\VisualStudio\10.0Exp\Extensions\Amazon Web Services\AWSToolkit.VS2010.Core\0.5.0.0</CloudFormationPath>
+    <!-- Integrated Shell -->
+    <CloudFormationPath Condition=" '$(CloudFormationPath)' == '' AND Exists('$(MSBuildExtensionsPath)\Amazon Web Services LLC\AWSToolkit.VS2010\cloudformation.targets')">$(MSBuildExtensionsPath)\Amazon Web Services LLC\AWSToolkit.VS2010</CloudFormationPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="domain-controller.template">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="domain-member.template">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="simple-server-test.template">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="simple-server.template">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="simple-xendesktop-farm.template">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="xendesktop-ddc.template">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(CloudFormationPath)\cloudformation.targets" />
+</Project>
