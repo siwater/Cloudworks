@@ -76,7 +76,10 @@
 									{ "Ref" : "SafeModePassword" }						
 								]]},
 								"waitAfterCompletion" : "forever"
-							}					
+							},
+							"4-signal-completion" : { 
+								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "DomainControllerWaitHandle" },"\"" ]] }
+							}						
 						}
 					}
 				}
@@ -92,7 +95,6 @@
 					"cfn-init.exe -v -s ", { "Ref" : "AWS::StackName" }, 
 					" -r DomainController ",       
 					" --region ", { "Ref" : "AWS::Region" }, "\n",
-					"cfn-signal.exe -e %ERRORLEVEL% \"", { "Ref" : "DomainControllerWaitHandle" }, "\"\n", 
 					"</script>"          
 				]]}}        
 			}
@@ -109,7 +111,72 @@
 				"Handle" : {"Ref" : "DomainControllerWaitHandle"},
 				"Timeout" : "1800"
 			}
+		},
+
+	"DomainMember": {  
+			"Type" : "AWS::EC2::Instance",
+			"Metadata" : {
+				"AWS::CloudFormation::Init" : {          
+					"config" : {
+						"sources" : {
+							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/scripts.zip" 
+						},     
+						"commands" : {
+							"1-rename-computer" : {
+								"command" : "C:\\cfn\\scripts\\RenameComputer.cmd -ComputerName DM01",
+								"waitAfterCompletion" : "forever"
+							},
+							"2-set-dns-server" : {
+								"command" : { "Fn::Join" : ["", [ 
+									"C:\\cfn\\scripts\\SetDnsConfiguration.cmd -DnsServers ", 
+									{ "Fn::GetAtt" : [ "DomainController", "PrivateIp" ] }
+								]] },
+								"waitAfterCompletion" : "0"
+							},
+							"3-join-domain" : {
+								"command" : { "Fn::Join" : ["", [ 
+									"C:\\cfn\\scripts\\JoinDomain.cmd -DomainName ", { "Ref" : "DomainDNSName" }, 
+									" -UserName Administrator ", 
+									" -Password ", { "Ref" : "SafeModePassword" } 
+								]] },
+								"waitAfterCompletion" : "forever"
+							},					
+							"4-signal-completion" : { 
+								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "DomainMemberWaitHandle" },"\"" ]] }
+							}
+						}
+					}
+				}
+			},
+      
+			"Properties": {
+				"ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" }, "64" ] },
+				"InstanceType" : { "Ref" : "InstanceType" },
+				"SecurityGroups" : [ "default" ],
+				"KeyName" : { "Ref" : "KeyPairName" },
+				"UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
+					"<script>\n",  
+					"cfn-init.exe -v -s ", { "Ref" : "AWS::StackName" }, 
+					" -r DomainMember ",       
+					" --region ", { "Ref" : "AWS::Region" }, "\n",
+					"</script>"          
+				]]}}        
+			}
+		},
+
+	"DomainMemberWaitHandle" : {
+			"Type" : "AWS::CloudFormation::WaitConditionHandle"
+		},
+						
+	"DomainMemberWaitCondition" : {
+			"Type" : "AWS::CloudFormation::WaitCondition",
+			"DependsOn" : "DomainMember",
+			"Properties" : {
+				"Handle" : {"Ref" : "DomainMemberWaitHandle"},
+				"Timeout" : "1800"
+			}
 		}
+
     },
 
 	"Outputs" : {

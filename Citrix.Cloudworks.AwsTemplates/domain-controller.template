@@ -76,6 +76,9 @@
 									{ "Ref" : "SafeModePassword" }						
 								]]},
 								"waitAfterCompletion" : "forever"
+							},
+							"4-signal-completion" : { 
+								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "DomainControllerWaitHandle" },"\"" ]] }
 							}					
 						}
 					}
@@ -92,7 +95,6 @@
 					"cfn-init.exe -v -s ", { "Ref" : "AWS::StackName" }, 
 					" -r DomainController ",       
 					" --region ", { "Ref" : "AWS::Region" }, "\n",
-					"cfn-signal.exe -e %ERRORLEVEL% \"", { "Ref" : "DomainControllerWaitHandle" }, "\"\n", 
 					"</script>"          
 				]]}}        
 			}
