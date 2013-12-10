@@ -39,6 +39,35 @@ class AmazonAdaptor:
 class CloudPlatformAdaptor:
 
     def __init__(self, server):
+        self.server = server
+        self.baseUrl = 'http://{0}/latest/meta-data/'.format(server)
+
+    # Content used for CFN_V1 authentication header to CFN server. This impl is temporary
+    def instance_identity_document_url(self):
+        return self.baseUrl + 'instance-id'
+
+    # Content used for CFN_V1 authentication header to CFN server. This impl is temporary.
+    def instance_identity_signature_url(self):
+        return self.baseUrl + 'instance-id'
+
+    def instance_id_url(self):
+        return self.baseUrl + 'instance-id'
+
+    # Unused ?
+    def iam_security_credentials_url(self, name):
+        return self.baseUrl + 'meta-data/iam/security-credentials/%s' % name
+
+    # CFN Server address: a DescribeStackResource will be made to this Url. Needs Impl!!!
+    def region_url(self, region):
+        return self.baseUrl + 'region/%s' % region
+
+    def region_url_regex(self):
+        return r'{0}region/([\w\d-]+)'.format( self.baseUrl)
+
+# Adaptor for local testing
+class TestAdaptor:
+
+    def __init__(self, server):
         self.baseUrl = 'http://{0}/stackmate/'.format(server)
 
     def instance_identity_document_url(self):
@@ -84,16 +113,19 @@ def is_ec2():
 
 Adaptor = None
 
+## (removed because it is too slow)
 ##if (is_ec2()):
 ##    Adaptor = AmazonAdaptor()
 ##else:
-##   for dhcp_server in get_dhcp_servers():
-##        if can_get("http://%s/latest/user-data"):
-##            Adaptor = CloudPlatformAdaptor(dhcp_server)
 
-# Use test server
+##for dhcp_server in get_dhcp_servers():
+##   if can_get("http://%s/latest/meta-data" % dhcp_server):
+##       Adaptor = CloudPlatformAdaptor(dhcp_server)
+##       break
+
+# Use test adaptor if not in CS environment (requires emulator to be running)
 if Adaptor == None:
-    Adaptor = CloudPlatformAdaptor("10.70.176.50")
+    Adaptor = TestAdaptor("10.70.176.50")
     ##raise Exception("No UserData service found")
 
 
