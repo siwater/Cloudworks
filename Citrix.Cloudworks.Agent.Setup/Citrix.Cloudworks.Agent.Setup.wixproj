@@ -27,7 +27,6 @@
     <Compile Include="CfnBootstrap.wxs" />
     <Compile Include="Citrix.Cloudworks.Agent.wxs" />
     <Compile Include="Product.wxs" />
-    <Compile Include="ScriptLibrary.wxs" />
     <Compile Include="WixUI_Custom.wxs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,10 +59,9 @@
     <MSBuild Projects="%(ProjectReference.FullPath)" Properties="Configuration=$(Configuration);Platform=AnyCPU" Condition="'%(ProjectReference.InstallProject)'=='True'" />
     <PropertyGroup>
       <LinkerBaseInputPaths>%(ProjectReference.RootDir)%(ProjectReference.Directory)bin\$(Configuration)\</LinkerBaseInputPaths>
-      <DefineConstants>BinPath=$(SolutionDir)Citrix.Cloudworks.Agent\bin\$(Configuration)\;ScriptPath=$(SolutionDir)ScriptLibrary\;CfnBootstrapPath=$(SolutionDir)aws-cfn-bootstrap-1.3\dist</DefineConstants>
+      <DefineConstants>BinPath=$(SolutionDir)Citrix.Cloudworks.Agent\bin\$(Configuration)\;CfnBootstrapPath=$(SolutionDir)aws-cfn-bootstrap-1.3\dist</DefineConstants>
     </PropertyGroup>
     <HeatDirectory OutputFile="%(ProjectReference.Filename).xml" Directory="%(ProjectReference.RootDir)%(ProjectReference.Directory)bin\$(Configuration)\" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="%(ProjectReference.Filename)_Project" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" Condition="'%(ProjectReference.InstallProject)'=='True'" PreprocessorVariable="var.BinPath" />
-    <HeatDirectory OutputFile="ScriptLibrary.wxs" Directory="$(SolutionDir)ScriptLibrary" DirectoryRefId="SCRIPTFOLDER" ComponentGroupName="ScriptLibrary" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.ScriptPath" />
     <HeatDirectory OutputFile="CfnBootstrap.wxs" Directory="$(SolutionDir)aws-cfn-bootstrap-1.3\dist" DirectoryRefId="CFNFOLDER" ComponentGroupName="CfnBootstrap" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.CfnBootstrapPath" />
     <XslTransformation XmlInputPaths="%(ProjectReference.Filename).xml" XslInputPath="HeatOutputTransform.xslt" OutputPaths="%(ProjectReference.Filename).wxs" Condition="'%(ProjectReference.InstallProject)'=='True'" />
   </Target>

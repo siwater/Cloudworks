@@ -29,7 +29,6 @@
           <Directory Id="CFNFOLDER" Name="cfn-bootstrap" />
           <Directory Id="CLOUDWORKSFOLDER" Name="Cloudworks">
             <Directory Id="INSTALLFOLDER" Name="Agent" />
-            <Directory Id="SCRIPTFOLDER" Name="Scripts" />
           </Directory>
         </Directory>
       </Directory>
@@ -40,17 +39,13 @@
       <ComponentRef Id="ServiceProcess"/>
       <ComponentRef Id="PathVariable"/>
     </Feature>
-    
-    <Feature Id="Cloudworks.Scripts" Title="Citrix Cloudworks Scripts" Level="1">
-      <ComponentGroupRef Id="ScriptLibrary" />
-    </Feature>
 
     <Feature Id="Cfn.Bootstrap" Title="Amazon CFN bootstrap scripts" Level="1">
       <ComponentGroupRef Id="CfnBootstrap" />
     </Feature>
 
     <Component Id="PathVariable" Directory="INSTALLFOLDER" Guid="2ff15711-821a-4b71-8b53-32f4100fc31b" KeyPath="yes">
-      <Environment Id="Env" Name="=PATH" Part="last" Value="[CFNFOLDER];[SCRIPTSFOLDER]" Action="set" System="yes"/>
+      <Environment Id="Env" Name="PATH" Part="last" Value="[CFNFOLDER]" Action="set" System="yes"/>
     </Component>
    
     <Component Id="ServiceProcess" Directory="INSTALLFOLDER" Win64="yes">

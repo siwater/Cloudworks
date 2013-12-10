@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Fragment>
         <DirectoryRef Id="INSTALLFOLDER">
-            <w:Component Id="cmp5746BD0A9A4BE7CCD28C1DDBA8A0C5AA" Guid="{6B603716-85F4-401B-9078-B52B8C36E05A}" KeyPath="yes" xmlns:w="http://schemas.microsoft.com/wix/2006/wi" />
-            <Component Id="cmpD33EC066EC687521A1C92D1AC6A2C6A5" Guid="{9D0409FB-3055-4021-92FB-299F2DB50639}">
+            <w:Component Id="cmp5746BD0A9A4BE7CCD28C1DDBA8A0C5AA" Guid="{E3A20814-816F-45D0-88BC-AB234A2C5085}" KeyPath="yes" xmlns:w="http://schemas.microsoft.com/wix/2006/wi" />
+            <Component Id="cmpD33EC066EC687521A1C92D1AC6A2C6A5" Guid="{29329FFF-BF2A-403F-A780-CE6688869A8D}">
                 <File Id="filCA0CB3FAB8C3E15ED7513D52D9EE13B2" KeyPath="yes" Source="$(var.BinPath)\Citrix.Cloudworks.Agent.exe.config" />
             </Component>
-            <Component Id="cmpDB96C9B5DA9FD56B091FDFA6362CCD64" Guid="{421C0595-E35C-49DC-B4FB-A3B31B7DA020}">
+            <Component Id="cmpDB96C9B5DA9FD56B091FDFA6362CCD64" Guid="{D979191F-652C-4A43-B291-12ADC9A53A69}">
                 <File Id="filD6AB2BFE0B4A3CEE785C9A9DF351CBAC" KeyPath="yes" Source="$(var.BinPath)\Citrix.Cloudworks.Agent.pdb" />
             </Component>
-            <Component Id="cmp5C464B5974F06631BC31651A13AEBA5D" Guid="{B8EB6AFE-DC76-4176-8387-21C9BB360254}">
+            <Component Id="cmp5C464B5974F06631BC31651A13AEBA5D" Guid="{8502376E-7A0D-44C6-8DFB-9BA2EA9AA562}">
                 <File Id="filA7A2F92E4CFF97A77F34A5B5F18EAB87" KeyPath="yes" Source="$(var.BinPath)\Citrix.Cloudworks.Agent.vshost.exe" />
             </Component>
-            <Component Id="cmpBC569511AA28308F2D74D7F6B7BEEA83" Guid="{4AE5BA10-0948-4D4F-9D70-B5EA6C53E144}">
+            <Component Id="cmpBC569511AA28308F2D74D7F6B7BEEA83" Guid="{A535E267-67E7-4AAF-B0E0-8C3E044BC745}">
                 <File Id="fil6649D155CD3D7A3FDCF8A88415D4D88D" KeyPath="yes" Source="$(var.BinPath)\Citrix.Cloudworks.Agent.vshost.exe.config" />
             </Component>
-            <Component Id="cmp056B6E18081AEC9C781F3E46B7405000" Guid="{DAEE83C5-A341-4F11-A6FB-B66C24933858}">
+            <Component Id="cmp056B6E18081AEC9C781F3E46B7405000" Guid="{319F5BEA-A21D-4438-93CB-E6F1932D19B5}">
                 <File Id="fil75DD35862F1D0288DC1F1E41DBE9A703" KeyPath="yes" Source="$(var.BinPath)\Citrix.Cloudworks.Agent.vshost.exe.manifest" />
             </Component>
-            <Component Id="cmp51E22D7B4AC3DD5608B51E5F80B55892" Guid="{D83ACABE-98C1-49CE-8E98-BD4E5C079D23}">
+            <Component Id="cmp51E22D7B4AC3DD5608B51E5F80B55892" Guid="{667FC3DA-A538-44D2-96DB-DB91FEE40A4A}">
                 <File Id="filD93585CD79EE57E993AE6669EEC97F8F" KeyPath="yes" Source="$(var.BinPath)\Citrix.Diagnostics.dll" />
             </Component>
-            <Component Id="cmpA3E83FC7B1928B2B7DD189279563D7AE" Guid="{865AF41E-7FDD-4DE5-9091-771618C8CB21}">
+            <Component Id="cmpA3E83FC7B1928B2B7DD189279563D7AE" Guid="{A6504063-4E0C-456C-9624-2F06B9BCAAA4}">
                 <File Id="filAEED87DDC2004DFA06A90AD8E04684C1" KeyPath="yes" Source="$(var.BinPath)\Citrix.Diagnostics.pdb" />
             </Component>
         </DirectoryRef>
