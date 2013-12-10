@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="1ec378ac-0c07-4c13-bcab-d3971c7b2178" Name="Citrix Cloudworks Scripts" Language="1033" Version="1.0.0.0" Manufacturer="Citrix Systems, Inc." UpgradeCode="49ce2212-c149-4a89-8b4f-f750ae21a7b1">
+    
+		<Package InstallerVersion="200" Compressed="yes" Description="Citrix Cloudworks Scripts Installer" Platform="x64" InstallScope="perMachine" />
+    
+    <Icon Id="XenDesktop_Combo_All.ico" SourceFile="000_XenDesktop_Combo_All.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="XenDesktop_Combo_All.ico"/>
+    <Property Id="ARPHELPLINK" Value="http://community.citrix.com/cloudworks" />
+    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+    
+    <!-- Require administrator privileges -->
+    <Condition Message="You need to be an administrator to install this product.">Privileged</Condition>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="CITRIXFOLDER" Name="Citrix">
+          <Directory Id="CLOUDWORKSFOLDER" Name="Cloudworks">
+            <Directory Id="SCRIPTFOLDER" Name="Scripts" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="Cloudworks.Scripts" Title="Citrix Cloudworks Scripts" Level="1">
+      <ComponentGroupRef Id="Scripts" />
+      <ComponentRef Id="PathVariable"/>
+      <ComponentRef Id="PsModulePathVariable"/>
+    </Feature>
+    
+    <Component Id="PathVariable" Directory="SCRIPTFOLDER" Guid="3fd48dc4-254e-457b-8f77-00096d3e06ea" KeyPath="yes">
+      <Environment Id="EnvPath" Name="PATH" Part="last" Value="[SCRIPTFOLDER]" Action="set" System="yes"/>
+    </Component>
+    <Component Id="PsModulePathVariable" Directory="SCRIPTFOLDER" Guid="342dec97-a290-46d8-9612-405901501756" KeyPath="yes">
+      <Environment Id="EnvPsModulePath" Name="PSModulePath" Part="last" Value="[SCRIPTFOLDER]" Action="set" System="yes"/>
+    </Component>
+	</Product>
+
+</Wix>
