@@ -13,21 +13,49 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Citrix.Cloudworks.TestClien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStack.SDK", "..\cloudstack_dotnetsdk\CloudStack.SDK\CloudStack.SDK.csproj", "{17A9FE85-5623-469B-8041-F44CF404F3AE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScriptLibrary", "ScriptLibrary", "{196488E7-12F2-4F3E-BDE0-8E2DA76CFDBC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{196488E7-12F2-4F3E-BDE0-8E2DA76CFDBC}"
 	ProjectSection(SolutionItems) = preProject
-		ScriptLibrary\CreateDomain.ps1 = ScriptLibrary\CreateDomain.ps1
-		ScriptLibrary\GetDnsConfiguration.ps1 = ScriptLibrary\GetDnsConfiguration.ps1
-		ScriptLibrary\JoinDomain.ps1 = ScriptLibrary\JoinDomain.ps1
-		ScriptLibrary\RebootTask.ps1 = ScriptLibrary\RebootTask.ps1
-		ScriptLibrary\RenameComputer.ps1 = ScriptLibrary\RenameComputer.ps1
-		ScriptLibrary\RenameComputerCreateDomainSample.ps1 = ScriptLibrary\RenameComputerCreateDomainSample.ps1
-		ScriptLibrary\RenameComputerJoinDomainSample.ps1 = ScriptLibrary\RenameComputerJoinDomainSample.ps1
-		ScriptLibrary\SetDnsConfiguration.ps1 = ScriptLibrary\SetDnsConfiguration.ps1
-		ScriptLibrary\unattend-template.txt = ScriptLibrary\unattend-template.txt
-		ScriptLibrary\Utilities.ps1 = ScriptLibrary\Utilities.ps1
+		Scripts\CreateDomain.cmd = Scripts\CreateDomain.cmd
+		Scripts\CreateDomain.ps1 = Scripts\CreateDomain.ps1
+		scripts\ExecuteProcessAndWait.cmd = scripts\ExecuteProcessAndWait.cmd
+		scripts\ExecuteProcessAndWait.ps1 = scripts\ExecuteProcessAndWait.ps1
+		scripts\GetDnsConfiguration.cmd = scripts\GetDnsConfiguration.cmd
+		Scripts\GetDnsConfiguration.ps1 = Scripts\GetDnsConfiguration.ps1
+		Scripts\JoinDomain.cmd = Scripts\JoinDomain.cmd
+		Scripts\JoinDomain.ps1 = Scripts\JoinDomain.ps1
+		Scripts\RebootTask.ps1 = Scripts\RebootTask.ps1
+		Scripts\RenameComputer.cmd = Scripts\RenameComputer.cmd
+		Scripts\RenameComputer.ps1 = Scripts\RenameComputer.ps1
+		Scripts\RenameComputerCreateDomainSample.ps1 = Scripts\RenameComputerCreateDomainSample.ps1
+		Scripts\RenameComputerJoinDomainSample.ps1 = Scripts\RenameComputerJoinDomainSample.ps1
+		scripts\ResetLocalAccount.cmd = scripts\ResetLocalAccount.cmd
+		scripts\ResetLocalAccount.ps1 = scripts\ResetLocalAccount.ps1
+		scripts\SetDnsConfiguration.cmd = scripts\SetDnsConfiguration.cmd
+		Scripts\SetDnsConfiguration.ps1 = Scripts\SetDnsConfiguration.ps1
+		Scripts\unattend-template.txt = Scripts\unattend-template.txt
+		scripts\XDCreateConnection.cmd = scripts\XDCreateConnection.cmd
+		scripts\XDCreateConnection.ps1 = scripts\XDCreateConnection.ps1
+		scripts\XDCreateSite.cmd = scripts\XDCreateSite.cmd
+		scripts\XDCreateSite.ps1 = scripts\XDCreateSite.ps1
+		scripts\XDInstallSingleServer.cmd = scripts\XDInstallSingleServer.cmd
+		scripts\XDInstallSingleServer.ps1 = scripts\XDInstallSingleServer.ps1
 	EndProjectSection
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "aws-cfn-bootstrap-1.3", "aws-cfn-bootstrap-1.3\aws-cfn-bootstrap-1.3.pyproj", "{26AA661F-8013-4EA5-95AD-DC4897EB3507}"
+EndProject
+Project("{22325025-CDA3-4736-83CB-2D32D2FCC215}") = "Citrix.Cloudworks.AwsTemplates", "Citrix.Cloudworks.AwsTemplates\Citrix.Cloudworks.AwsTemplates.cfproj", "{99999999-9999-9999-9999-999999999999}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Citrix.Cloudworks.Scripts.Setup", "Citrix.Cloudworks.Scripts.Setup\Citrix.Cloudworks.Scripts.Setup.wixproj", "{3E81A1AF-944B-430C-8DF5-97C40D3C156B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CloudworksTools", "CloudworksTools", "{99D90AC2-33B6-42F4-8011-E9097E4A60C4}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\CloudworksTools\CloudworksTools.psm1 = scripts\CloudworksTools\CloudworksTools.psm1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XenDesktopTools", "XenDesktopTools", "{E67C1820-C14C-44BB-BF86-D05378150A1E}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\XenDesktopTools\XenDesktopTools.psm1 = scripts\XenDesktopTools\XenDesktopTools.psm1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,8 +136,32 @@ Global
 		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{26AA661F-8013-4EA5-95AD-DC4897EB3507}.Release|x86.ActiveCfg = Release|Any CPU
+		{99999999-9999-9999-9999-999999999999}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{99999999-9999-9999-9999-999999999999}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{99999999-9999-9999-9999-999999999999}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{99999999-9999-9999-9999-999999999999}.Debug|x86.ActiveCfg = Debug|x86
+		{99999999-9999-9999-9999-999999999999}.Debug|x86.Build.0 = Debug|x86
+		{99999999-9999-9999-9999-999999999999}.Release|Any CPU.ActiveCfg = Release|x86
+		{99999999-9999-9999-9999-999999999999}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{99999999-9999-9999-9999-999999999999}.Release|Mixed Platforms.Build.0 = Release|x86
+		{99999999-9999-9999-9999-999999999999}.Release|x86.ActiveCfg = Release|x86
+		{99999999-9999-9999-9999-999999999999}.Release|x86.Build.0 = Release|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Debug|x86.ActiveCfg = Debug|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Debug|x86.Build.0 = Debug|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Release|Any CPU.ActiveCfg = Release|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Release|x86.ActiveCfg = Release|x86
+		{3E81A1AF-944B-430C-8DF5-97C40D3C156B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{99D90AC2-33B6-42F4-8011-E9097E4A60C4} = {196488E7-12F2-4F3E-BDE0-8E2DA76CFDBC}
+		{E67C1820-C14C-44BB-BF86-D05378150A1E} = {196488E7-12F2-4F3E-BDE0-8E2DA76CFDBC}
 	EndGlobalSection
 EndGlobal
