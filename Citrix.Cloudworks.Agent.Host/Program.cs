@@ -15,7 +15,7 @@ namespace Citrix.Cloudworks.Agent.Host {
     class Program {
         static void Main(string[] args) {
 
-            CtxTrace.Initialize("stackmate-agent-host", true);
+            CtxTrace.Initialize("cloudworks-agent-host", true);
             CloudworksServices svc = new CloudworksServices();
             new UserDataState("C:\\cfn").InitialisationComplete = false;
 
