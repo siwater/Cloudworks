@@ -1,7 +1,7 @@
 {
 	"AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "This template creates a standalone server ",
+  "Description" : "This template creates a standalone Citrix license server ",
 
   "Parameters" : {
 		"KeyPairName" : {
@@ -12,8 +12,24 @@
 		"InstanceType" : {
 			"Description" : "Amazon EC2 instance type",
 			"Type" : "String",
-			"Default" : "m1.large",
+			"Default" : "m1.small",
 			"AllowedValues" : [ "m1.small", "m1.medium", "m1.large", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "c1.medium", "c1.xlarge"]
+		},
+		"ServerName" : {
+			"Description" : "NetBios name for the server",
+			"Type" : "String",
+			"Default" : "License",
+			"MinLength" : "3",
+			"MaxLength" : "16",
+			"AllowedPattern" : "[a-zA-Z0-9]+"
+		},
+		"AdminPassword" : {
+			"Description" : "Password for the administrator account",
+			"Type" : "String",
+			"Default" : "Citrix123",
+			"MinLength" : "8",
+			"MaxLength" : "32",
+			"NoEcho" : "True"
 		}
   },
 
@@ -32,19 +48,36 @@
 
   "Resources" : {
 	
-	"TestServer": {  
+	"LicenseServer": {  
 			"Type" : "AWS::EC2::Instance",
 			"Metadata" : {
 				"AWS::CloudFormation::Init" : {          
 					"config" : {
 						"sources" : {
-							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/latest/scripts.zip" 
+							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/latest/scripts.zip" ,
+							"C:\\cfn\\license" : "https://s3.amazonaws.com/citrix-cloudworks/CitrixLicenseServer-11.11.1.zip"
 						},     
 						"commands" : {
-							"1-do-something" : {
-								"command" : "echo \"Hello world\""
-							},										
-							"2-signal-completion" : { 
+							"1-reset-password" : {
+								"command" :  { "Fn::Join" : [ "", [
+									"C:\\cfn\\scripts\\ResetLocalAccount.cmd -UserName Administrator -Password ",
+									{ "Ref" : "AdminPassword" }
+								]]},
+								"waitAfterCompletion" : "0"
+							},				  
+							"2-rename-computer" : {
+								"command" : { "Fn::Join" : [ "", [
+									 "C:\\cfn\\scripts\\RenameComputer.cmd -ComputerName ", { "Ref" : "ServerName" }
+								]]},
+								"waitAfterCompletion" : "forever"
+							},									
+							"3-install-license-server" : {
+								"command" : { "Fn::Join" : [ "", [
+									"C:\\cfn\\scripts\\InstallMsi.cmd -MsiPath 'C:\\cfn\\license\\CTX_Licensing.msi'"							
+								]]},
+								"waitAfterCompletion" : "0"
+							},
+							"4-signal-completion" : { 
 								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "ServerWaitHandle" },"\"" ]] },
 								"waitAfterCompletion" : "0"
 							}
@@ -57,11 +90,12 @@
 				"ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" }, "64" ] },
 				"InstanceType" : { "Ref" : "InstanceType" },
 				"SecurityGroups" : [ "default" ],
+				"Tags" : [ { "Key" : "Name", "Value" : { "Ref" : "ServerName" } } ],
 				"KeyName" : { "Ref" : "KeyPairName" },
 				"UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
 					"<script>\n",  
 					"cfn-init.exe -v -s ", { "Ref" : "AWS::StackName" }, 
-					" -r TestServer ",       
+					" -r LicenseServer ",       
 					" --region ", { "Ref" : "AWS::Region" }, "\n",
 					"</script>"          
 				]]}}        
@@ -74,7 +108,7 @@
 						
 	"ServerWaitCondition" : {
 			"Type" : "AWS::CloudFormation::WaitCondition",
-			"DependsOn" : "TestServer",
+			"DependsOn" : "LicenseServer",
 			"Properties" : {
 				"Handle" : {"Ref" : "ServerWaitHandle"},
 				"Timeout" : "1800"
@@ -84,8 +118,12 @@
 
 	"Outputs" : {
 		"ServerId" : {
-			"Value" : { "Ref" : "TestServer" },
-			"Description" : "Test Server Id"
+			"Value" : { "Ref" : "LicenseServer" },
+			"Description" : "License Server Id"
+		},
+		"LicenseServerPrivateIP" : {
+			"Value" : { "Fn::GetAtt" : [ "LicenseServer", "PrivateIp" ] },
+			"Description" : "License Server private IP address"
 		}
 	}
 }

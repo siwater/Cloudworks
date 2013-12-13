@@ -18,7 +18,7 @@
 	    "ServerName" : {
 			"Description" : "NetBios name of the server",
 			"Type" : "String",
-			"Default" : "DM01",
+			"Default" : "XDC01",
 			"MinLength" : "3",
 			"MaxLength" : "16",
 			"AllowedPattern" : "[a-zA-Z0-9]+"
@@ -30,6 +30,11 @@
 			"MinLength" : "3",
 			"MaxLength" : "25",
 			"AllowedPattern" : "[a-zA-Z0-9]+\\..+"
+		},
+		"LicenseServer" : {
+			"Description" : "Name or IP address of Citrix License server e.g. license.example.com",
+			"Type" : "String",
+			"Default" : "license.cloudworks.local"
 		},
 		"DNSServerIP" : {
 			"Description" : "IP address of the DNS server to use",
@@ -65,13 +70,21 @@
 
   "Resources" : {
 	
-	"DomainMember": {  
+	"XenDesktopController": {  
 			"Type" : "AWS::EC2::Instance",
 			"Metadata" : {
 				"AWS::CloudFormation::Init" : {          
 					"config" : {
+						"files" : {
+							"C:\\cfn\\xd\\Xendesktop7.iso" : {
+								"source" : "https://s3.amazonaws.com/citrix-cloudworks/XenDesktop7.iso"
+							},
+							"C:\\cfn\\xd\\7z920-x64.msi" : {
+								"source" : "https://s3.amazonaws.com/citrix-cloudworks/7z920-x64.msi"
+							}
+						},
 						"sources" : {
-							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/latest/scripts.zip" 
+							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/2013-12-13/scripts.zip" 
 						},     
 						"commands" : {
 							"1-rename-computer" : {
@@ -95,9 +108,34 @@
 									" -Password ", { "Ref" : "DomainJoinerPassword" } 
 								]] },
 								"waitAfterCompletion" : "forever"
-							},					
-							"4-signal-completion" : { 
-								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "DomainMemberWaitHandle" },"\"" ]] }
+							},												
+							"4-install-7-zip" : {
+								"command" : { "Fn::Join" : [ "", [
+									"C:\\cfn\\scripts\\InstallMsi.cmd -MsiPath C:\\cfn\\xd\\7z920-x64.msi"							
+								]]},
+								"waitAfterCompletion" : "0"
+							},		
+							"5-extract-xendesktop-iso" : {
+								"command" : { "Fn::Join" : [ "", [
+									"\"C:\\Program Files\\7-Zip\\7z.exe\" x -oC:\\cfn\\xd\\ C:\\cfn\\xd\\XenDesktop7.iso"								
+								]]},
+								"waitAfterCompletion" : "0"
+							},										
+							"6-install-xendesktop-ddc" : {
+								"command" : { "Fn::Join" : [ "", [
+									"C:\\cfn\\scripts\\XDInstallSingleServer.cmd -InstallerPath 'C:\\cfn\\xd\\x64\\XenDesktop Setup' -Reboot"							
+								]]},
+								"waitAfterCompletion" : "forever"
+							},
+							"7-create-xendesktop-site" : {
+								"command" : { "Fn::Join" : [ "", [
+									"C:\\cfn\\scripts\\XDCreateSite.cmd -LicenseServer ", { "Ref" : "LicenseServer" }							
+								]]},
+								"waitAfterCompletion" : "0"
+							},											
+							"8-signal-completion" : { 
+								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "DDCWaitHandle" },"\"" ]] },
+								"waitAfterCompletion" : "0"
 							}
 						}
 					}
@@ -113,31 +151,31 @@
 				"UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
 					"<script>\n",  
 					"cfn-init.exe -v -s ", { "Ref" : "AWS::StackName" }, 
-					" -r DomainMember ",       
+					" -r XenDesktopController ",       
 					" --region ", { "Ref" : "AWS::Region" }, "\n",
 					"</script>"          
 				]]}}        
 			}
 		},
 
-	"DomainMemberWaitHandle" : {
+	"DDCWaitHandle" : {
 			"Type" : "AWS::CloudFormation::WaitConditionHandle"
 		},
 						
-	"DomainMemberWaitCondition" : {
+	"DDCWaitCondition" : {
 			"Type" : "AWS::CloudFormation::WaitCondition",
-			"DependsOn" : "DomainMember",
+			"DependsOn" : "XenDesktopController",
 			"Properties" : {
-				"Handle" : {"Ref" : "DomainMemberWaitHandle"},
-				"Timeout" : "1800"
+				"Handle" : {"Ref" : "DDCWaitHandle"},
+				"Timeout" : "3600"
 			}
 		}	
     },
 
 	"Outputs" : {
 		"DomainMemberId" : {
-			"Value" : { "Ref" : "DomainMember" },
-			"Description" : "Domain Member Id"
+			"Value" : { "Ref" : "XenDesktopController" },
+			"Description" : "Xendesktop Controller ID"
 		}
 	}
 }

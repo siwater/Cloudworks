@@ -12,19 +12,27 @@
 		"InstanceType" : {
 			"Description" : "Amazon EC2 instance type",
 			"Type" : "String",
-			"Default" : "m1.large",
+			"Default" : "m1.medium",
 			"AllowedValues" : [ "m1.small", "m1.medium", "m1.large", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "c1.medium", "c1.xlarge"]
 		},
 		"DomainDNSName" : {
 			"Description" : "Fully qualified domain name (FQDN) of the forest root domain e.g. corp.example.com",
 			"Type" : "String",
-			"Default" : "cloudworks.net",
+			"Default" : "cloudworks.local",
 			"MinLength" : "3",
 			"MaxLength" : "25",
 			"AllowedPattern" : "[a-zA-Z0-9]+\\..+"
 		},
-		"SafeModePassword" : {
-			"Description" : "Password for the administrator account when the domain controller is started in Safe Mode",
+		"DCServerName" : {
+			"Description" : "NetBios name for the domain controller",
+			"Type" : "String",
+			"Default" : "DC01",
+			"MinLength" : "3",
+			"MaxLength" : "16",
+			"AllowedPattern" : "[a-zA-Z0-9]+"
+		},
+		"AdminPassword" : {
+			"Description" : "Password for the administrator account",
 			"Type" : "String",
 			"Default" : "Citrix123",
 			"MinLength" : "8",
@@ -54,18 +62,20 @@
 				"AWS::CloudFormation::Init" : {          
 					"config" : {
 						"sources" : {
-							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/scripts.zip" 
+							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/latest/scripts.zip" 
 						},          
 						"commands" : {												
 							"1-reset-password" : {
 								"command" :  { "Fn::Join" : [ "", [
 									"C:\\cfn\\scripts\\ResetLocalAccount.cmd -UserName Administrator -Password ",
-									{ "Ref" : "SafeModePassword" }
+									{ "Ref" : "AdminPassword" }
 								]]},
 								"waitAfterCompletion" : "0"
 							},				  
 							"2-rename-computer" : {
-								"command" : "C:\\cfn\\scripts\\RenameComputer.cmd -ComputerName DC01",
+								"command" : { "Fn::Join" : [ "", [
+									 "C:\\cfn\\scripts\\RenameComputer.cmd -ComputerName ", { "Ref" : "DCServerName" }
+								]]},
 								"waitAfterCompletion" : "forever"
 							},
 							"3-dcpromo" : {
@@ -73,12 +83,13 @@
 									"C:\\cfn\\scripts\\CreateDomain.cmd -DomainName ",
 									{ "Ref" : "DomainDNSName" },
 									" -SafeModePassword ",
-									{ "Ref" : "SafeModePassword" }						
+									{ "Ref" : "AdminPassword" }						
 								]]},
 								"waitAfterCompletion" : "forever"
 							},
 							"4-signal-completion" : { 
-								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "DomainControllerWaitHandle" },"\"" ]] }
+								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "DomainControllerWaitHandle" },"\"" ]] },
+								"waitAfterCompletion" : "0"
 							}					
 						}
 					}
@@ -89,6 +100,7 @@
 				"ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" }, "64" ] },
 				"InstanceType" : { "Ref" : "InstanceType" },
 				"SecurityGroups" : [ "default" ],
+				"Tags" : [ { "Key" : "Name", "Value" : { "Ref" : "DCServerName" } } ],
 				"KeyName" : { "Ref" : "KeyPairName" },
 				"UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
 					"<script>\n",  

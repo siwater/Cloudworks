@@ -19,6 +19,12 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="citrix-license-server.template">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="domain-controller-with-trust.template">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="domain-controller.template">
       <SubType>Code</SubType>
     </Compile>
@@ -31,10 +37,13 @@
     <Compile Include="simple-server.template">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="simple-xendesktop-farm.template">
+    <Compile Include="simple-domain.template">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="xendesktop-ddc.template">
+    <Compile Include="xendesktop-contoller.template">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="xendesktop-farm.template">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

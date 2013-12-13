@@ -38,38 +38,38 @@
 				"AWS::CloudFormation::Init" : {          
 					"config" : {
 						"files" : {
-							"C:\\cfn\\scratch\\Xendesktop7.iso" : {
+							"C:\\cfn\\xd\\Xendesktop7.iso" : {
 								"source" : "https://s3.amazonaws.com/citrix-cloudworks/XenDesktop7.iso"
 							},
-							"C:\\cfn\\scratch\\7z920-x64.msi" : {
+							"C:\\cfn\\xd\\7z920-x64.msi" : {
 								"source" : "https://s3.amazonaws.com/citrix-cloudworks/7z920-x64.msi"
 							}
 						},
 						"sources" : {
-							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/scripts.zip" 
+							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/latest/scripts.zip" 
 						},     
 						"commands" : {
 							"1-install-7-zip" : {
 								"command" : { "Fn::Join" : [ "", [
-									"C:\\cfn\\scratch\\7z920-x64.msi /q"							
+									"C:\\cfn\\scripts\\InstallMsi.cmd -MsiPath C:\\cfn\\xd\\7z920-x64.msi"							
 								]]},
 								"waitAfterCompletion" : "0"
 							},		
 							"2-extract-xendesktop-iso" : {
 								"command" : { "Fn::Join" : [ "", [
-									"cd C:\\cfn\\scratch\\ \n",
-									"\"C:\\Program Files\\7-Zip\\7z.exe\" x -o. XenDesktop7.iso\n"								
+									"\"C:\\Program Files\\7-Zip\\7z.exe\" x -oC:\\cfn\\xd\\ C:\\cfn\\xd\\XenDesktop7.iso"								
 								]]},
 								"waitAfterCompletion" : "0"
 							},										
 							"3-install-xendesktop-ddc" : {
 								"command" : { "Fn::Join" : [ "", [
-									"C:\\cfn\\scripts\\XenDesktop\\InstallSingleServer.cmd -InstallerPath C:\\cfn\\scratch\\x64\\XenDesktop Setup\\ \n", "\n"							
+									"C:\\cfn\\scripts\\XDInstallSingleServer.cmd -InstallerPath 'C:\\cfn\\xd\\x64\\XenDesktop Setup'", "\n"							
 								]]},
 								"waitAfterCompletion" : "0"
 							},									
 							"4-signal-completion" : { 
-								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "ServerWaitHandle" },"\"" ]] }
+								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "ServerWaitHandle" },"\"" ]] },
+								"waitAfterCompletion" : "0"
 							}
 						}
 					}
@@ -86,7 +86,8 @@
 					"cfn-init.exe -v -s ", { "Ref" : "AWS::StackName" }, 
 					" -r TestServer ",       
 					" --region ", { "Ref" : "AWS::Region" }, "\n",
-					"</script>"          
+					"if %ERRORLEVEL% NEQ 0 cfn-signal -e %ERRORLEVEL% \"", { "Ref" : "ServerWaitHandle" }, "\"",
+					"</script>"       
 				]]}}        
 			}
 		},
