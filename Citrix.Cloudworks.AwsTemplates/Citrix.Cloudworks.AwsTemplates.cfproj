@@ -31,7 +31,7 @@
     <Compile Include="domain-member.template">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="simple-server-test.template">
+    <Compile Include="simple-test.template">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="simple-server.template">

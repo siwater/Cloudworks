@@ -12,7 +12,7 @@
 		"InstanceType" : {
 			"Description" : "Amazon EC2 instance type",
 			"Type" : "String",
-			"Default" : "m1.medium",
+			"Default" : "m1.small",
 			"AllowedValues" : [ "m1.small", "m1.medium", "m1.large", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "c1.medium", "c1.xlarge"]
 		},
 		"DomainDNSName" : {

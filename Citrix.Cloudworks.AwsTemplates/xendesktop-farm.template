@@ -71,8 +71,7 @@
 		},
 		"CitrixLicenseServer" : {
 			"Description" : "Name or IP address of Citrix License server e.g. license.example.com",
-			"Type" : "String",
-			"Default" : "10.182.192.134"
+			"Type" : "String"
 		}
   },
 
@@ -162,7 +161,7 @@
 
 	"DomainControllerWaitHandle" : {
 			"Type" : "AWS::CloudFormation::WaitConditionHandle"
-		},
+	},
 						
 	"DomainControllerWaitCondition" : {
 			"Type" : "AWS::CloudFormation::WaitCondition",
@@ -185,27 +184,33 @@
 							},
 							"C:\\cfn\\xd\\7z920-x64.msi" : {
 								"source" : "https://s3.amazonaws.com/citrix-cloudworks/7z920-x64.msi"
+							},
+							"C:\\cfn\\xd\\DT2.Setup.msi" : {
+								"source" : "https://s3.amazonaws.com/citrix-cloudworks/DT2.Setup.msi"
+							},
+							"C:\\cfn\\dotnetfx45_full_x86_x64.exe" : {
+								"source" : "https://s3.amazonaws.com/citrix-cloudworks/dotnetfx45_full_x86_x64.exe"
 							}
 						},
 						"sources" : {
-							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/2013-12-13/scripts.zip" 
+							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/latest/scripts.zip" 
 						},     
 						"commands" : {
-							"1-rename-computer" : {
+							"a-rename-computer" : {
 								"command" : { "Fn::Join" : ["", [
 									"C:\\cfn\\scripts\\RenameComputer.cmd -ComputerName ",
 									{ "Ref" : "XDCServerName" }
 								]] },
 								"waitAfterCompletion" : "forever"
 							},
-							"2-set-dns-server" : {
+							"b-set-dns-server" : {
 								"command" : { "Fn::Join" : ["", [ 
 									"C:\\cfn\\scripts\\SetDnsConfiguration.cmd -DnsServers ", 
 									{ "Fn::GetAtt" : [ "DomainController", "PrivateIp" ] }
 								]] },
 								"waitAfterCompletion" : "0"
 							},
-							"3-join-domain" : {
+							"c-join-domain" : {
 								"command" : { "Fn::Join" : ["", [ 
 									"C:\\cfn\\scripts\\JoinDomain.cmd -DomainName ", { "Ref" : "DomainDNSName" }, 
 									" -UserName Administrator ", 
@@ -213,32 +218,54 @@
 								]] },
 								"waitAfterCompletion" : "forever"
 							},												
-							"4-install-7-zip" : {
+							"d-install-7-zip" : {
 								"command" : { "Fn::Join" : [ "", [
 									"C:\\cfn\\scripts\\InstallMsi.cmd -MsiPath C:\\cfn\\xd\\7z920-x64.msi"							
 								]]},
 								"waitAfterCompletion" : "0"
 							},		
-							"5-extract-xendesktop-iso" : {
+							"e-extract-xendesktop-iso" : {
 								"command" : { "Fn::Join" : [ "", [
 									"\"C:\\Program Files\\7-Zip\\7z.exe\" x -oC:\\cfn\\xd\\ C:\\cfn\\xd\\XenDesktop7_1.iso"								
 								]]},
 								"waitAfterCompletion" : "0"
 							},										
-							"6-install-xendesktop-ddc" : {
+							"f-install-xendesktop-ddc" : {
 								"command" : { "Fn::Join" : [ "", [
 									"C:\\cfn\\scripts\\XDInstallSingleServer.cmd -InstallerPath 'C:\\cfn\\xd\\x64\\XenDesktop Setup' -Reboot"							
 								]]},
 								"waitAfterCompletion" : "forever"
 							},
-							"7-create-xendesktop-site" : {
+							"g-create-xendesktop-site" : {
 								"command" : { "Fn::Join" : [ "", [
-									"C:\\cfn\\scripts\\XDCreateSite.cmd -LicenseServer ", { "Ref" : "CitrixLicenseServer" }							
+									"C:\\cfn\\scripts\\XDCreateSite.cmd -LicenseServer ", { "Ref" : "CitrixLicenseServer" },
+									" -Administrator administrator@", { "Ref" : "DomainDNSName" }				
 								]]},
 								"waitAfterCompletion" : "0"
 							},											
-							"8-signal-completion" : { 
-								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "XDCWaitHandle" },"\"" ]] },
+							"h-install-dotnet-45" : { 
+								"command" : { "Fn::Join" : ["", [ 
+									"start /w C:\\cfn\\dotnetfx45_full_x86_x64.exe /q /norestart" 
+								]]},
+								"waitAfterCompletion" : "0"
+							},
+							"i-install-admin-app" : { 
+								"command" : { "Fn::Join" : ["", [ 
+									"C:\\cfn\\scripts\\InstallMsi.cmd -MsiPath C:\\cfn\\xd\\DT2.Setup.msi" 
+								]]},
+								"waitAfterCompletion" : "0"
+							},																	
+							"j-configure-admin-app" : { 
+								"command" : { "Fn::Join" : ["", [ 
+									"C:\\cfn\\scripts\\DT2SetConfiguration -CloudStackUrl http://192.168.2.1:8080/client/api",
+									" -ZoneId ",  "zone-xxx"
+								]]},
+								"waitAfterCompletion" : "0"
+							},											
+							"k-signal-completion" : { 
+								"command" : { "Fn::Join" : ["", [ 
+									"cfn-signal.exe -e 0 \"", { "Ref" : "XDCWaitHandle" },"\"" 
+								]]},
 								"waitAfterCompletion" : "0"
 							}
 						}
@@ -271,7 +298,7 @@
 			"DependsOn" : "XenDesktopController",
 			"Properties" : {
 				"Handle" : {"Ref" : "XDCWaitHandle"},
-				"Timeout" : "3600"
+				"Timeout" : "7200"
 			}
 		}	
     },

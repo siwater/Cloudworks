@@ -84,7 +84,7 @@
 							}
 						},
 						"sources" : {
-							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/2013-12-13/scripts.zip" 
+							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/latest/scripts.zip" 
 						},     
 						"commands" : {
 							"1-rename-computer" : {

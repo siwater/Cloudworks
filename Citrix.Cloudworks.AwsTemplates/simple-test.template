@@ -14,14 +14,6 @@
 			"Type" : "String",
 			"Default" : "m1.small",
 			"AllowedValues" : [ "m1.small", "m1.medium", "m1.large", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "c1.medium", "c1.xlarge"]
-		},
-		"AdminPassword" : {
-			"Description" : "Password for the administrator account",
-			"Type" : "String",
-			"Default" : "Citrix123",
-			"MinLength" : "8",
-			"MaxLength" : "32",
-			"NoEcho" : "True"
 		}
   },
 
@@ -49,13 +41,12 @@
 							"C:\\cfn\\" : "https://s3.amazonaws.com/citrix-cloudworks/latest/scripts.zip" 
 						},     
 						"commands" : {
-							"1-reset-password" : {
-								"command" :  { "Fn::Join" : [ "", [
-									"C:\\cfn\\scripts\\ResetLocalAccount.cmd -UserName Administrator -Password ",
-									{ "Ref" : "AdminPassword" }
+							"1-get-env" : {
+								"command" : { "Fn::Join" : [ "", [
+									"echo '%StackMateApiUrl%"						
 								]]},
 								"waitAfterCompletion" : "0"
-							},				  							
+							},								
 							"2-signal-completion" : { 
 								"command" : { "Fn::Join" : ["", [ "cfn-signal.exe -e 0 \"", { "Ref" : "ServerWaitHandle" },"\"" ]] },
 								"waitAfterCompletion" : "0"
@@ -69,14 +60,15 @@
 				"ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" }, "64" ] },
 				"InstanceType" : { "Ref" : "InstanceType" },
 				"SecurityGroups" : [ "default" ],
-				"Tags" : [ { "Key" : "Name", "Value" : "SimpleServer" } ],
 				"KeyName" : { "Ref" : "KeyPairName" },
 				"UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
-					"<script>\n",  
+					"<script>\n",
+					"set StackMateApiUrl=", { "Ref" : "InstanceType" }, "\n",
 					"cfn-init.exe -v -s ", { "Ref" : "AWS::StackName" }, 
 					" -r TestServer ",       
 					" --region ", { "Ref" : "AWS::Region" }, "\n",
-					"</script>"          
+					"if %ERRORLEVEL% NEQ 0 cfn-signal -e %ERRORLEVEL% \"", { "Ref" : "ServerWaitHandle" }, "\"",
+					"</script>"       
 				]]}}        
 			}
 		},
