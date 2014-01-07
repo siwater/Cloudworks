@@ -13,7 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #==============================================================================
+
+import logging
+import os
 import requests
+import sys
 import win32com.client
 
 class AmazonAdaptor:
@@ -57,14 +61,20 @@ class CloudPlatformAdaptor:
     def iam_security_credentials_url(self, name):
         return self.baseUrl + 'meta-data/iam/security-credentials/%s' % name
 
-    # CFN Server address: a DescribeStackResource will be made to this Url. Needs Impl!!!
+    # CFN Server address: a DescribeStackResource will be made to this Url.
+    # The Url should be provided in the environment
     def region_url(self, region):
-        return self.baseUrl + 'region/%s' % region
+        var = 'StackMateApiUrl'
+        try: 
+            return os.environ[var]
+        except KeyError:
+            print >> sys.stderr, "%s not set" % var
+            return self.baseUrl + 'region/%s' % region
 
     def region_url_regex(self):
         return r'{0}region/([\w\d-]+)'.format( self.baseUrl)
 
-# Adaptor for local testing
+# Adaptor for local testing (requires StackMate emulator)
 class TestAdaptor:
 
     def __init__(self, server):
@@ -107,23 +117,15 @@ def can_get(url):
     except IOError:
        return False
 
-def is_ec2():
-    """Try to figure out if this is an EC2 instance by looking for the userdata/metadata server."""
-    return can_get("http://169.254.169.254/latest")
 
 Adaptor = None
 
-## (removed because it is too slow)
-##if (is_ec2()):
-##    Adaptor = AmazonAdaptor()
-##else:
+for dhcp_server in get_dhcp_servers():
+   if can_get("http://%s/latest/meta-data" % dhcp_server):
+       Adaptor = CloudPlatformAdaptor(dhcp_server)
+       break
 
-##for dhcp_server in get_dhcp_servers():
-##   if can_get("http://%s/latest/meta-data" % dhcp_server):
-##       Adaptor = CloudPlatformAdaptor(dhcp_server)
-##       break
-
-# Use test adaptor if not in CS environment (requires emulator to be running)
+# Use test adaptor if not in CS environment
 if Adaptor == None:
     Adaptor = TestAdaptor("10.70.176.50")
     ##raise Exception("No UserData service found")

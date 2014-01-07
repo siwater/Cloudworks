@@ -17,6 +17,8 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Content Include="build.cmd" />
+    <Content Include="README.txt" />
     <Content Include="setup.py" />
     <Content Include="bin-py\cfn-elect-cmd-leader.py" />
     <Content Include="bin-py\cfn-get-metadata.py" />
@@ -66,10 +68,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <Target Name="Py2Exe">
-    <Message Text="Building Windows executables $(MSBuildToolsPath)"/>
+    <Message Text="Building Windows executables $(MSBuildToolsPath)" />
     <Exec Command="python setup.py py2exe" />
   </Target>
   <Target Name="Build">
-    <CallTarget Targets="Py2Exe"/>
+    <CallTarget Targets="Py2Exe" />
   </Target>
 </Project>
