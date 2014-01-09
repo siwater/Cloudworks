@@ -52,6 +52,7 @@ function Get-InventoryItem {
     Get-ChildItem -Path $path -Recurse | Where-Object {$_.ObjectType -eq $ItemType}
 }
 
-
-Add-PSSnapin -Name Citrix.Host.Admin.v2
+if ((Get-PSSnapin -Name Citrix.Host.Admin.v2 -ErrorAction SilentlyContinue) -eq $null) {
+    Add-PSSnapin Citrix.Host.Admin.v2
+}
 Export-ModuleMember -Function Get-Networks, Get-AvailabilityZones, Get-Templates, Get-ServiceOfferings, Get-InventoryItem
