@@ -50,7 +50,6 @@
 		"DomainJoinerPassword" : {
 			"Description" : "Password for domain joiner account",
 			"Type" : "String",
-			"Default" : "Citrix123",
 			"NoEcho" : "True"
 		}
   },

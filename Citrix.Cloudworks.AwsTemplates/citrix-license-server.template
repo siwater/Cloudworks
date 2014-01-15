@@ -26,7 +26,6 @@
 		"AdminPassword" : {
 			"Description" : "Password for the administrator account",
 			"Type" : "String",
-			"Default" : "Citrix123",
 			"MinLength" : "8",
 			"MaxLength" : "32",
 			"NoEcho" : "True"

@@ -26,7 +26,6 @@
 		"DomainDNSName" : {
 			"Description" : "Name  of the domain to join e.g. corp.example.com",
 			"Type" : "String",
-			"Default" : "cloudworks.local",
 			"MinLength" : "3",
 			"MaxLength" : "25",
 			"AllowedPattern" : "[a-zA-Z0-9]+\\..+"
@@ -45,7 +44,6 @@
 		"DomainJoinerPassword" : {
 			"Description" : "Password for domain joiner account",
 			"Type" : "String",
-			"Default" : "Citrix123",
 			"NoEcho" : "True"
 		}
   },
