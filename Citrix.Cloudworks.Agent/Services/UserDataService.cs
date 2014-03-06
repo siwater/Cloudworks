@@ -82,20 +82,22 @@ namespace Citrix.Cloudworks.Agent.Services {
             // UserData may be a little slow to be delivered
             while (!stateService.InitialisationComplete && !stopSignalled) {
                 string userData = GetUserData();
-                if (userData != null) {
-                    // Script may initiate a reboot, so mark the processing done once userData read.
-                    stateService.InitialisationComplete = true;
-                    
+                if (!string.IsNullOrEmpty(userData)) {
+                                 
                     // May be multiple root elements, so wrap for Xml parser
                     string wrappedUserData = string.Format("<dummyRoot>{0}</dummyRoot>", userData);
                     try {
                         XDocument doc = XDocument.Parse(wrappedUserData);
                         XElement script = doc.XPathSelectElement("//script");
                         if (script != null) {
+                            // Script may initiate a reboot, so mark the processing done once userData read.
+                            stateService.InitialisationComplete = true;
                             ExecuteScript(script.Value);
                         }
                         script = doc.XPathSelectElement("//powershell");
                         if (script != null) {
+                            // Script may initiate a reboot, so mark the processing done once userData read.
+                            stateService.InitialisationComplete = true;
                             ExecutePowerShellScript(script.Value);
                         }
 
