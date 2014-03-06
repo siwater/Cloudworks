@@ -20,7 +20,7 @@
     <!-- Require .NET 3.5 to install -->
     <PropertyRef Id="NETFRAMEWORK35" />
     <Condition Message='This setup requires the .NET Framework 3.5 be installed.'>
-      <![CDATA[(Installed OR NETFRAMEWORK35)]]>
+      <![CDATA[(Installed OR NETFRAMEWORK35 OR NETFRAMEWORK45)]]>
     </Condition>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
