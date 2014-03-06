@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{1964
 		Scripts\RenameComputer.ps1 = Scripts\RenameComputer.ps1
 		Scripts\RenameComputerCreateDomainSample.ps1 = Scripts\RenameComputerCreateDomainSample.ps1
 		Scripts\RenameComputerJoinDomainSample.ps1 = Scripts\RenameComputerJoinDomainSample.ps1
+		scripts\ResetDnsOnBoot.cmd = scripts\ResetDnsOnBoot.cmd
+		scripts\ResetDnsOnBoot.ps1 = scripts\ResetDnsOnBoot.ps1
 		scripts\ResetLocalAccount.cmd = scripts\ResetLocalAccount.cmd
 		scripts\ResetLocalAccount.ps1 = scripts\ResetLocalAccount.ps1
 		scripts\SetDnsConfiguration.cmd = scripts\SetDnsConfiguration.cmd
@@ -40,12 +42,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{1964
 		scripts\SetDnsForwarder.cmd = scripts\SetDnsForwarder.cmd
 		scripts\SetDnsForwarder.ps1 = scripts\SetDnsForwarder.ps1
 		Scripts\unattend-template.txt = Scripts\unattend-template.txt
-		scripts\XDCreateConnection.cmd = scripts\XDCreateConnection.cmd
-		scripts\XDCreateConnection.ps1 = scripts\XDCreateConnection.ps1
+		scripts\XDCreateResources.cmd = scripts\XDCreateResources.cmd
+		scripts\XDCreateResources.ps1 = scripts\XDCreateResources.ps1
 		scripts\XDCreateSite.cmd = scripts\XDCreateSite.cmd
 		scripts\XDCreateSite.ps1 = scripts\XDCreateSite.ps1
 		scripts\XDInstallSingleServer.cmd = scripts\XDInstallSingleServer.cmd
 		scripts\XDInstallSingleServer.ps1 = scripts\XDInstallSingleServer.ps1
+		scripts\XDInstallVda.cmd = scripts\XDInstallVda.cmd
+		scripts\XDInstallVda.ps1 = scripts\XDInstallVda.ps1
 	EndProjectSection
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "aws-cfn-bootstrap-1.3", "aws-cfn-bootstrap-1.3\aws-cfn-bootstrap-1.3.pyproj", "{26AA661F-8013-4EA5-95AD-DC4897EB3507}"
