@@ -43,6 +43,13 @@ function Get-ServiceOfferings {
     return Get-InventoryItem $ConnectionName "ServiceOffering"
 }
 
+function Get-VirtualPrivateClouds {
+    Param(
+        [string]$ConnectionName
+    )
+    return Get-InventoryItem $ConnectionName "VirtualPrivateCloud"
+}
+
 function Get-InventoryItem {
     Param(
         [string]$ConnectionName,
@@ -55,4 +62,4 @@ function Get-InventoryItem {
 if ((Get-PSSnapin -Name Citrix.Host.Admin.v2 -ErrorAction SilentlyContinue) -eq $null) {
     Add-PSSnapin Citrix.Host.Admin.v2
 }
-Export-ModuleMember -Function Get-Networks, Get-AvailabilityZones, Get-Templates, Get-ServiceOfferings, Get-InventoryItem
+Export-ModuleMember -Function Get-Networks, Get-AvailabilityZones, Get-Templates, Get-ServiceOfferings, Get-VirtualPrivateClouds, Get-InventoryItem
