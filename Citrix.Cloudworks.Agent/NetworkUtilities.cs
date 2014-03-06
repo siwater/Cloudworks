@@ -21,7 +21,7 @@ namespace Citrix.Cloudworks.Agent {
         /// <param name="url"></param>
         /// <returns></returns>
         public static string HttpGet(string url) {
-            CtxTrace.TraceInformation("url={0}", url);
+            CtxTrace.TraceVerbose("url={0}", url);
             try {
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                 request.Method = "GET";
