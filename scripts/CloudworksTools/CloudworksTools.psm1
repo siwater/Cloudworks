@@ -1,5 +1,5 @@
 <#
-    Copyright © 2013 Citrix Systems, Inc. All rights reserved.
+    Copyright © 2013/2014 Citrix Systems, Inc. All rights reserved.
 
 .SYNOPSIS
    Cloudworks tools
@@ -92,4 +92,26 @@ function Start-ProcessAndWait {
     }
 }
 
-Export-ModuleMember -Function Start-Logging, Stop-Logging, Write-Log, New-RunOnceTask, Remove-Task, Start-ProcessAndWait
+function Install-Feature () {
+   Param(
+        [string]$FeatureName
+    )    
+    try {
+       Import-Module ServerManager   
+       $feature = Get-WindowsFeature | Where-Object {$_.Name -eq $FeatureName}
+       if (-not $feature.Installed) {
+           Add-WindowsFeature $FeatureName –IncludeAllSubFeature
+       }
+    } catch {
+      Write-Log "Error attempting to install $FeatureName"
+      throw
+    }
+}
+
+function Get-OsName {
+    $os = Get-WmiObject Win32_OperatingSystem
+    $name = $os.name
+    return $name.Substring(0,$name.IndexOf('|')).Trim()
+}
+
+Export-ModuleMember -Function Start-Logging, Stop-Logging, Write-Log, New-RunOnceTask, Remove-Task, Start-ProcessAndWait, Get-OsName, Install-Feature
