@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Citrix.SelfServiceDesktops.Agent.Host")]
+[assembly: AssemblyTitle("Citrix Cloudworks Agent")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard Company")]
-[assembly: AssemblyProduct("Citrix.SelfServiceDesktops.Agent.Host")]
-[assembly: AssemblyCopyright("Copyright © Hewlett-Packard Company 2013")]
+[assembly: AssemblyCompany("Citrix Systems, Inc.")]
+[assembly: AssemblyProduct("Citrix Cloudworks")]
+[assembly: AssemblyCopyright("Copyright © Citrix Systems, Inc. 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("14.03.26")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
