@@ -92,7 +92,7 @@ function Start-ProcessAndWait {
     }
 }
 
-function Install-Feature () {
+function Install-Feature {
    Param(
         [string]$FeatureName
     )    
