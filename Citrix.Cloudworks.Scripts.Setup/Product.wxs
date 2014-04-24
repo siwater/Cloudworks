@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="1ec378ac-0c07-4c13-bcab-d3971c7b2178" Name="Citrix Cloudworks Scripts" Language="1033" Version="1.0.0.0" Manufacturer="Citrix Systems, Inc." UpgradeCode="49ce2212-c149-4a89-8b4f-f750ae21a7b1">
+	<Product Id="1ec378ac-0c07-4c13-bcab-d3971c7b2178" Name="Citrix Cloudworks Scripts" Language="1033" Version="14.03.26" Manufacturer="Citrix Systems, Inc." UpgradeCode="49ce2212-c149-4a89-8b4f-f750ae21a7b1">
     
 		<Package InstallerVersion="200" Compressed="yes" Description="Citrix Cloudworks Scripts Installer" Platform="x64" InstallScope="perMachine" />
     
