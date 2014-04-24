@@ -22,7 +22,7 @@ namespace Citrix.Cloudworks.Agent {
 
         public static string DisplayName {
             get {
-                return "Citrix StackMate Agent";
+                return "Citrix Cloudworks Agent";
             }
         }
 
@@ -34,7 +34,7 @@ namespace Citrix.Cloudworks.Agent {
 
         public static string Description {
             get {
-                return "Windows agent for Citrix StackMate";
+                return "Windows agent for Citrix Cloudworks";
             }
         }
 
