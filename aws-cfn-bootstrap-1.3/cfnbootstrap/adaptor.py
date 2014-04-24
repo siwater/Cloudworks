@@ -100,6 +100,14 @@ class TestAdaptor:
 
 def get_dhcp_servers():
     """Get a list of all the DHCP servers configured for the system"""
+    if sys.platform == "linux" or sys.platform == "linux2":
+        return get_dhcp_servers_Linux()
+    elif sys.platform == "win32":
+        return get_dhcp_servers_Windows()
+    raise Exception("Unrecognised sys.platform: %" % sys.platform)
+
+def get_dhcp_servers_Windows():
+    """Windows specific code to get a list of all the DHCP servers configured for the system"""
     result = []
     wmi = win32com.client.Dispatch("WbemScripting.SWbemLocator")
     cim = wmi.ConnectServer(".", "root\cimv2")
@@ -108,6 +116,26 @@ def get_dhcp_servers():
         if adaptor.DHCPServer != None:
             result.append(adaptor.DHCPServer)
     return result
+
+def get_dhcp_servers_Linux():
+    """Linux specific code to get a list of all the DHCP servers configured for the system"""
+    result = []
+
+    p=subprocess.Popen("cat /var/lib/dhcp/dhclient.eth0.leases | grep dhcp-server-identifier",stderr=subprocess.PIPE,stdout=subprocess.PIPE,shell=True)
+    out, err = p.communicate()
+
+    if out == '':
+        p=subprocess.Popen("cat /var/lib/dhclient/dhclient-eth0.leases | grep dhcp-server-identifier",stderr=subprocess.PIPE,stdout=subprocess.PIPE,shell=True)
+        out, err = p.communicate()
+
+    adaptors=out.split()
+    for adaptor in adaptors:
+        m=re.match(".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$",adaptor.rstrip(';'))
+        if m is not None:
+            result.append(m.group())
+    return result
+
+
 
 def can_get(url):
     """Return true if the URL is accessible via GET."""
