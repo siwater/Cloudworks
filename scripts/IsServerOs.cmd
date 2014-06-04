@@ -5,3 +5,4 @@ set PSModulePath=%PsModulePath%;%~dp0
 :Exec
 powershell.exe -ExecutionPolicy Unrestricted .\%~nn0.ps1 %*
 popd
+exit /b %ERRORLEVEL%
