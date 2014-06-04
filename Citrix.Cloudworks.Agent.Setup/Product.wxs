@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  
+  <!-- Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved. -->
   <Product Id="42dde6b2-fd14-4e25-bdcb-8010b6ebe20e" Name="Citrix Cloudworks Agent" Language="1033" Version="14.03.26" Manufacturer="Citrix Systems, Inc." UpgradeCode="a4301867-f70b-4e1e-89ea-8ebe8e4b80ee">
 
     <Package InstallerVersion="200"

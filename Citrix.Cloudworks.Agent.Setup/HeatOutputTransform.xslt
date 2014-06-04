@@ -1,7 +1,7 @@
 ﻿<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   version="1.0"
   xmlns:w="http://schemas.microsoft.com/wix/2006/wi">
-
+  <!-- Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved. -->
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" />
