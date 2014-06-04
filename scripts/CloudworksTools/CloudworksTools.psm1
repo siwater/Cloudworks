@@ -15,9 +15,9 @@
      http://community.citrix.com/
 #>
 function Start-Logging {
-    $logdir = (Split-Path -parent $MyInvocation.ScriptName) + "\logs\"
+    $logdir = "C:\cfn\log\"
     if (-not (Test-Path $logdir)) {
-        $null = New-Item -Path $logdir -ItemType directory
+        New-Item -Path $logdir -ItemType directory | Out-Null
     } 
     $logFile = $logdir + (Get-Date -Format "yyyyMMddHHmmss") + ".log"
     try {
@@ -114,4 +114,29 @@ function Get-OsName {
     return $name.Substring(0,$name.IndexOf('|')).Trim()
 }
 
+function ConvertTo-DistinguishedName {
+    Param (
+        [string]$fqdn
+    )
+    return ($fqdn.Split('.') | ? { $_ } | foreach { "DC=$_" }) -join ','
+}
+
+function Join-Url {
+    Param(
+        [string[]]$parts
+    )
+    return ($parts | ? { $_ } | foreach { $_.Trim().Trim('/') } ) -join '/'
+}
+
+function Get-Ipv4Address {
+    Param (
+        [string]$DnsName
+    )       
+    $ipEntry = [System.Net.Dns]::GetHostEntry($DnsName)
+    $result = @($ipEntry.AddressList | where {$_.AddressFamily -eq [System.Net.Sockets.AddressFamily]::InterNetwork} | ForEach-Object { $_.IPAddressToString })
+    return ,$result
+}
+
+
 Export-ModuleMember -Function Start-Logging, Stop-Logging, Write-Log, New-RunOnceTask, Remove-Task, Start-ProcessAndWait, Get-OsName, Install-Feature
+Export-ModuleMember -Function ConvertTo-DistinguishedName, Join-Url, Get-Ipv4Address
