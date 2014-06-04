@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
+ */
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
