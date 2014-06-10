@@ -20,12 +20,6 @@
     <Content Include="build.cmd" />
     <Content Include="README.txt" />
     <Content Include="setup.py" />
-    <Content Include="bin-py\cfn-elect-cmd-leader.py" />
-    <Content Include="bin-py\cfn-get-metadata.py" />
-    <Content Include="bin-py\cfn-hup.py" />
-    <Content Include="bin-py\cfn-init.py" />
-    <Content Include="bin-py\cfn-send-cmd-result.py" />
-    <Content Include="bin-py\cfn-signal.py" />
     <Content Include="cfnbootstrap\adaptor.py" />
     <Content Include="cfnbootstrap\apt_tool.py" />
     <Content Include="cfnbootstrap\auth.py" />
@@ -61,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin" />
-    <Folder Include="bin-py" />
     <Folder Include="cfnbootstrap" />
     <Folder Include="license" />
     <Folder Include="license\win" />
